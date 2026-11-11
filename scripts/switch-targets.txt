@@ -1,0 +1,70 @@
+# 正式切換會動到的設定檔（相對於 ROOT，預設 ROOT=$HOME）。備份與還原都照這份清單。
+# 一行一個檔案；資料夾結尾加 /（整個資料夾打包，保留 symlink）
+.claude/settings.json
+.claude/plugins/installed_plugins.json
+.claude/plugins/known_marketplaces.json
+.claude/skills/
+.claude/agents/
+.gemini/config/skills/
+GitLab/app01-double/.claude/settings.local.json
+GitLab/app01-double UITest/.claude/settings.local.json
+GitLab/app11-double/.claude/settings.local.json
+GitLab/tms-driver-app/.claude/settings.local.json
+GitLab/b2b-manager/.claude/settings.local.json
+GitLab/b2b-backend/.claude/settings.local.json
+GitLab/cmsportal/.claude/settings.local.json
+GitLab/tms-frontend/.claude/settings.local.json
+GitLab/tms-system-manager-frontend/.claude/settings.local.json
+GitLab/tms-backend/.claude/settings.local.json
+GitLab/db-scripts/.claude/settings.local.json
+GitLab/03ManageCenter/.claude/settings.local.json
+GitLab/04CustomerAppServer/.claude/settings.local.json
+GitLab/05SmartAppServer/.claude/settings.local.json
+GitLab/08Station/.claude/settings.local.json
+GitLab/10Car/.claude/settings.local.json
+GitLab/12Mediator/.claude/settings.local.json
+GitLab/deployrelated/.claude/settings.local.json
+GitLab/aiworkflow/.claude/settings.local.json
+GitLab/design-docs/.claude/settings.local.json
+GitLab/workspace-setup/.claude/settings.local.json
+Desktop/開發流程升級_2026-11-09/.claude/settings.local.json
+# 2026-11-11 補：第 4 節沒列到的 repo 與個人資料夾
+GitLab/risenxicheji/.claude/settings.local.json
+GitLab/iot-service/.claude/settings.local.json
+GitLab/car-wash-kiosk/.claude/settings.local.json
+GitLab/wash-car/.claude/settings.local.json
+GitLab/authserver/.claude/settings.local.json
+GitLab/billingdaycalculator/.claude/settings.local.json
+GitLab/car-wash-gateway/.claude/settings.local.json
+GitLab/carbonledger-assessment/.claude/settings.local.json
+GitLab/dw-collector/.claude/settings.local.json
+GitLab/dw-infra/.claude/settings.local.json
+GitLab/dw-loader/.claude/settings.local.json
+GitLab/dw-rwp/.claude/settings.local.json
+GitLab/fleet-dashboard-poc/.claude/settings.local.json
+GitLab/formosabusinesscard/.claude/settings.local.json
+GitLab/notificationapp/.claude/settings.local.json
+GitLab/pushfiletos3/.claude/settings.local.json
+GitLab/ScheduledBillingService/.claude/settings.local.json
+GitLab/UploadInvoice/.claude/settings.local.json
+GitLab/ureamiddleware/.claude/settings.local.json
+GitLab/vipwebservice/.claude/settings.local.json
+GitLab/washordercleaner/.claude/settings.local.json
+GitLab/slc-in-house/.claude/settings.local.json
+GitLab/claude-pilot-suite/.claude/settings.local.json
+GitLab/cognitive-hub/.claude/settings.local.json
+GitLab/google-workspace-admin-project-workflow/.claude/settings.local.json
+GitLab/ZeroSpec/.claude/settings.local.json
+Desktop/Speckit Project/.claude/settings.local.json
+Desktop/Agentic RAG測試專案/.claude/settings.local.json
+Desktop/RAG測試專案原形/.claude/settings.local.json
+PycharmProjects/docker_image_exercise/.claude/settings.local.json
+PycharmProjects/DownloadVideoPythonProject/.claude/settings.local.json
+PycharmProjects/fcm-push-service/.claude/settings.local.json
+PycharmProjects/llamaIndex-exercise/.claude/settings.local.json
+PycharmProjects/newcomer-assistant/.claude/settings.local.json
+PycharmProjects/preschool-finder-crawler/.claude/settings.local.json
+PycharmProjects/train-booking-gui/.claude/settings.local.json
+PycharmProjects/train-booking/.claude/settings.local.json
+PycharmProjects/WelcomeScreen/.claude/settings.local.json
+.claude/settings.local.json
