@@ -8,9 +8,19 @@
   },
   "plugins": [
     {
-      "name": "workflow",
-      "source": "./plugins/workflow",
-      "description": "開發主流程（requirements、stack-review、doc-update、doubt-check 等）與共用 skill，第一版先整包。"
+      "name": "core",
+      "source": "./plugins/core",
+      "description": "共同層：交接、壓縮打包、追問想法、retro、寫給 agent 的文件規範。所有角色都啟用。"
+    },
+    {
+      "name": "dev",
+      "source": "./plugins/dev",
+      "description": "開發主流程：requirements、stack-review、doc-update、doubt-check、tdd、diagnosing-bugs、pr、project-documentation、ai-pair、code-reviewer。依賴 core。"
+    },
+    {
+      "name": "dev-app",
+      "source": "./plugins/dev-app",
+      "description": "行動 App 專屬：figma-to-requirements。依賴 dev。"
     }
   ]
 }

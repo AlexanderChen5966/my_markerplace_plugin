@@ -1,9 +1,0 @@
-{
-  "name": "workflow",
-  "displayName": "個人開發流程",
-  "description": "開發主流程與共用 skill（第一版整包，之後再依功能拆分）",
-  "version": "0.1.0",
-  "author": {
-    "name": "alexanderchen5966"
-  }
-}

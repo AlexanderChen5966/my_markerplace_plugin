@@ -1,0 +1,9 @@
+{
+  "name": "core",
+  "displayName": "個人流程：共同層",
+  "description": "所有角色共用：跨 agent 交接、壓縮打包、追問想法、retro、寫給 agent 的文件規範",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}

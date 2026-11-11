@@ -1,0 +1,9 @@
+{
+  "name": "dev-app",
+  "displayName": "個人流程：行動 App",
+  "description": "App 工程師專用：figma-to-requirements（之後加 stack-review 的 ios.md、react-native.md）",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}

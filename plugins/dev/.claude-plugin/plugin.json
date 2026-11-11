@@ -1,0 +1,9 @@
+{
+  "name": "dev",
+  "displayName": "個人流程：開發主流程",
+  "description": "開發類角色用：requirements、stack-review、doc-update、doubt-check、tdd、diagnosing-bugs、pr、project-documentation、ai-pair、code-reviewer",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}
