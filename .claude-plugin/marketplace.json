@@ -1,0 +1,16 @@
+{
+  "name": "alexanderchen5966-marketplace",
+  "owner": {
+    "name": "alexanderchen5966"
+  },
+  "metadata": {
+    "description": "個人開發流程的 skill 與 agent。"
+  },
+  "plugins": [
+    {
+      "name": "workflow",
+      "source": "./plugins/workflow",
+      "description": "開發主流程（requirements、stack-review、doc-update、doubt-check 等）與共用 skill，第一版先整包。"
+    }
+  ]
+}
