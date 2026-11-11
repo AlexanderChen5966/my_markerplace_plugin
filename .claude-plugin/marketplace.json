@@ -21,6 +21,11 @@
       "name": "dev-app",
       "source": "./plugins/dev-app",
       "description": "行動 App 專屬：figma-to-requirements。依賴 dev。"
+    },
+    {
+      "name": "dev-web",
+      "source": "./plugins/dev-web",
+      "description": "網頁前端專屬：flutter-ui-compare（與 Flutter Web 並排量測比對）。依賴 dev。"
     }
   ]
 }

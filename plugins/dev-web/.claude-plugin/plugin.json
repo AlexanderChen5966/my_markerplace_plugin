@@ -1,0 +1,9 @@
+{
+  "name": "dev-web",
+  "displayName": "個人流程：網頁前端",
+  "description": "網頁前端專用：flutter-ui-compare（網頁畫面與 Flutter Web 並排量測比對）",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}
