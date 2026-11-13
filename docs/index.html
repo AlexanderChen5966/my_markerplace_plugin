@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal Dev Workflow Plugins 個人開發流程</title>
+<meta name="description" content="個人開發流程的 skill 與 agent，分成四個 plugin。 A personal development workflow packaged as four Claude Code plugins.">
+<link rel="stylesheet" href="assets/style.css"></head><body>
+<nav class="nav" aria-label="main"><strong>alexanderchen5966-marketplace</strong>
+<a href="#flow">流程 Flow</a><a href="#plugins">Plugins</a><a href="#skills">Skills</a><a href="map/">互動地圖 Map</a><a id="gh" href="#">GitHub</a></nav>
+<main>
+<header style="display:flex;flex-direction:column;gap:14px">
+<div class="eyebrow">Claude Code plugins</div>
+<h1>個人開發流程<span class="en">A personal development workflow, packaged as plugins</span></h1>
+<p>把一張需求從「想清楚」到「開 MR」的做法，拆成可獨立啟用的 skill 與 agent，依專案類型決定要啟用哪幾包。<span class="en">The path from a vague request to a merge request, split into small skills and agents. Each project type enables only the plugins it needs.</span></p>
+<a class="cta" href="map/">開啟互動地圖 Open the interactive map →</a>
+</header>
+
+<section id="flow"><h2>主流程 Main flow<span class="en">One straight line; dashed items run only when a condition holds</span></h2>
+<p>主流程是一條直線。虛線的 skill 只在有條件時才叫：需求模糊、有設計稿、bug 卡住、高風險決定。複雜需求時，③ 的審查改走 ai-pair。<span class="en">The flow is linear. Dashed skills run conditionally: ambiguous request, a design file, a stuck bug, a high-risk decision. For complex work, ai-pair replaces build and review.</span></p>
+<div class="steps" id="steps"></div>
+<p style="color:var(--muted);font-size:13px">commit、push、開 MR 一律由人處理，agent 不自動執行。<span class="en">Committing, pushing and opening the MR are always done by a person; agents never do it automatically.</span></p></section>
+
+<section id="plugins"><h2>四個 Plugins<span class="en">Four plugins, enabled by project type</span></h2>
+<div class="grid" id="plugin-cards"></div>
+<h3>依專案類型啟用 Enabled by project type</h3>
+<div class="tw"><table id="roles"></table></div></section>
+
+<section id="skills"><h2>Skills 與 agent<span class="en">Skills and agents</span></h2>
+<div class="grid" id="skill-cards"></div></section>
+
+<section><h2>來源與致謝 Credits</h2>
+<p>部分 skill 來自或改寫自他人的開源作品，皆為 MIT 授權，授權全文隨 plugin 附上。<span class="en">Some skills come from, or are adapted from, other people's open-source work, all MIT-licensed; license texts ship with the plugins.</span></p>
+<ul><li>Matt Pocock skills (MIT): grilling, grill-me, diagnosing-bugs, tdd, pr, writing-for-agents, retro</li>
+<li>doubt-check: adapted from Addy Osmani's doubt-driven (MIT)</li>
+<li>pr: adapted from Humanlayer's show-me</li></ul></section>
+</main>
+<footer>© alexanderchen5966 · <a id="gh2" href="#">GitHub</a></footer>
+<script src="assets/site.js"></script>
+<script>
+SITE.load("").then(d=>{
+ document.getElementById("gh").href=document.getElementById("gh2").href=SITE.repo;
+ const by=id=>d.skills.filter(s=>s.step===id);
+ document.getElementById("steps").innerHTML=d.steps.filter(s=>s.id!=="side").map(st=>`<div class="step"><h3>${SITE.bi(st.zh,st.en)}</h3><div class="skills">${by(st.id).map(s=>`<span class="chip${s.cond?" cond":""}">${s.id}</span>`).join("")}</div></div>`).join("");
+ document.getElementById("plugin-cards").innerHTML=d.plugins.map(p=>`<div class="card"><h3><code>${p.id}</code></h3><p>${SITE.bi(p.zh,p.en)}</p><p style="font-size:13px;color:var(--muted)">${p.deps.length?"依賴 depends on: "+p.deps.join(", "):"無依賴 no dependencies"}</p><div class="skills">${d.skills.filter(s=>s.plugin===p.id).map(s=>`<span class="chip${s.cond?" cond":""}">${s.id}</span>`).join(" ")}</div></div>`).join("");
+ document.getElementById("roles").innerHTML="<tr><th>專案類型 Project type</th>"+d.plugins.map(p=>`<th>${p.id}</th>`).join("")+"</tr>"+d.roles.map(r=>`<tr><td>${SITE.bi(r.zh,r.en)}</td>${d.plugins.map(p=>`<td>${r.plugins.includes(p.id)?"●":""}</td>`).join("")}</tr>`).join("");
+ const groups=[["你輸入的指令 Commands you type",s=>s.manual],["模型會自動叫用 Invoked by the model",s=>!s.manual]];
+ document.getElementById("skill-cards").innerHTML=d.skills.map(s=>`<div class="card"><h3><code>${s.id}</code> <small style="font-weight:400;color:var(--muted)">${s.plugin}${s.version?" · v"+s.version:""}</small></h3><div>${SITE.badges(s)}</div><p>${SITE.bi(s.zh,s.en)}</p><p style="font-size:13px">${SITE.bi(s.whenZh,s.whenEn)}</p><p style="font-size:12px"><code>${SITE.esc(s.invoke)}</code></p></div>`).join("");
+});
+</script></body></html>
