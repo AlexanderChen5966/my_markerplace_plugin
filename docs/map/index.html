@@ -1,12 +1,20 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Skill Map 互動地圖</title><link rel="stylesheet" href="../assets/style.css"></head><body>
-<nav class="nav" aria-label="main"><strong>alexanderchen5966-marketplace</strong><a href="../">首頁 Home</a><a href="./">互動地圖 Map</a><a id="gh" href="#">GitHub</a></nav>
-<main>
-<header style="display:flex;flex-direction:column;gap:12px"><h1>互動 Skill 地圖<span class="en">Interactive skill map</span></h1>
-<div class="tabs" role="tablist" id="tabs"></div>
-<div class="legend"><span>實線 solid：一般會用 always</span><span>虛線 dashed：有條件 conditional</span><span style="color:var(--lab)">紫框 purple：agent</span><span>點節點看說明 click a node for details · 方向鍵／Tab 可操作 keyboard works</span></div></header>
-<div class="layout"><div id="view" aria-live="polite"></div>
-<aside class="panel" id="panel"><p>點一個節點。<span class="en">Select a node.</span></p></aside></div>
+<title>Skill map 流程地圖</title>
+<link rel="stylesheet" href="../assets/style.css"></head><body>
+<div class="top"><div class="wrap" style="max-width:1340px">
+<a class="brand" href="../"><span class="logo"><i></i><i></i><i></i></span>dev-workflow</a>
+<a class="lk" href="./"><b>Skill map 流程地圖</b></a><a class="lk" href="../#skills">Skills</a><a class="lk" id="gh" href="#">GitHub</a>
+<button class="btn" id="theme" type="button">☼ Theme</button></div></div>
+<main class="sm-main">
+<div class="sm-head"><span class="logo"><i></i><i></i><i></i></span><h1>Skill map 流程地圖</h1><span class="pill" id="count"></span></div>
+<p class="sm-sub">由左到右讀，點任何一格看它什麼時候用。<span class="en"> Read left to right, then tap anything to see when to use it.</span></p>
+<div class="sm" id="sm">
+<div class="tb"><input id="q" type="search" placeholder="Search 搜尋 skill" aria-label="Search skills"><span class="sp"></span>
+<button class="btn" id="collapse" type="button">Collapse all 全部收合</button><button class="btn" id="fs" type="button">⛶ Full screen 全螢幕</button></div>
+<div class="scroll" id="canvas"></div></div>
+<section class="sm-order"><h2>建議順序 Best-practice order</h2><div class="order" id="order"></div></section>
+<p class="sm-foot">虛線框的節點只在有條件時才用；「手動」表示只能由你輸入指令叫用。<span class="en"> Dashed nodes run only when a condition holds; “manual” means only you can invoke it.</span><br>commit、push、開 MR 一律由人處理。<span class="en"> Committing, pushing and opening the MR are always done by a person.</span></p>
 </main>
+<div class="ov" id="ov" hidden><div class="md" id="md" role="dialog" aria-modal="true"></div></div>
 <script src="../assets/site.js"></script><script src="../assets/map.js"></script></body></html>

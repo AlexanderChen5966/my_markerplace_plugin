@@ -1,79 +1,589 @@
 {
-  "plugins": [
-    {"id":"core","zh":"共同層：所有角色都啟用","en":"Common layer, enabled for every role","deps":[]},
-    {"id":"dev","zh":"開發主流程","en":"Main development workflow","deps":["core"]},
-    {"id":"dev-app","zh":"行動 App 專屬","en":"Mobile app specific","deps":["dev"]},
-    {"id":"dev-web","zh":"網頁前端專屬","en":"Web frontend specific","deps":["dev"]}
-  ],
-  "steps": [
-    {"id":"req","zh":"① 需求","en":"1. Requirements"},
-    {"id":"build","zh":"② 開發","en":"2. Build"},
-    {"id":"review","zh":"③ 審查","en":"3. Review"},
-    {"id":"wrap","zh":"④ 收尾","en":"4. Wrap-up"},
-    {"id":"side","zh":"隨時可用","en":"Any time"}
-  ],
-  "roles": [
-    {"zh":"一般開發","en":"General development","plugins":["core","dev"]},
-    {"zh":"App 專案","en":"App project","plugins":["core","dev","dev-app"]},
-    {"zh":"網頁前端專案","en":"Web frontend project","plugins":["core","dev","dev-web"]},
-    {"zh":"App＋網頁並存的專案","en":"Project with both app and web","plugins":["core","dev","dev-app","dev-web"]},
-    {"zh":"後端專案","en":"Backend project","plugins":["core","dev"]},
-    {"zh":"非開發工作","en":"Non-development work","plugins":["core"]}
-  ],
-  "skills": [
-    {"id":"figma-to-requirements","plugin":"dev-app","version":"1.0.2","kind":"skill","step":"req","cond":true,"manual":false,"invoke":"/dev-app:figma-to-requirements",
-     "zh":"把設計稿截圖對應到專案的設計 token，產出 token 對應表與狀態矩陣，再交給 requirements。","en":"Map design screenshots to the project's design tokens; produce a token table and state matrix, then hand off to requirements.",
-     "whenZh":"有設計稿才做。","whenEn":"Only when a design file exists."},
-    {"id":"requirements","plugin":"dev","version":"1.8.0","kind":"skill","step":"req","cond":false,"manual":false,"invoke":"/dev:requirements",
-     "zh":"先讀既有文件並判斷可信度，再翻原始碼；產出含影響範圍、風險、任務與驗證方式的任務文件。","en":"Read existing docs and judge their reliability, then read the source; produce a task document with impact, risks, tasks and verification.",
-     "whenZh":"開發前，把模糊需求變成可實作的文件。","whenEn":"Before coding, to turn a vague request into an implementable document."},
-    {"id":"grilling","plugin":"core","version":"","kind":"skill","step":"req","cond":true,"manual":false,"invoke":"/core:grilling","source":"Matt Pocock (MIT)",
-     "zh":"反覆追問，只問查不到、只有人能決定的事，直到需求沒有模糊地帶。","en":"Keep asking, only about what cannot be looked up and only a person can decide, until nothing is ambiguous.",
-     "whenZh":"需求模糊時，由 requirements 叫用。","whenEn":"When a request is ambiguous; called by requirements."},
-    {"id":"tdd","plugin":"dev","version":"","kind":"skill","step":"build","cond":false,"manual":false,"invoke":"/dev:tdd","source":"Matt Pocock (MIT)",
-     "zh":"測試先行：先約定介面，一個測試配一段實作，紅燈、綠燈、重構。","en":"Test first: agree on the interface, one test per slice of implementation; red, green, refactor.",
-     "whenZh":"新程式、有測試基礎的程式。","whenEn":"For new code or code that already has a test setup."},
-    {"id":"diagnosing-bugs","plugin":"dev","version":"","kind":"skill","step":"build","cond":true,"manual":false,"invoke":"/dev:diagnosing-bugs","source":"Matt Pocock (MIT)",
-     "zh":"先做出能穩定重現的回饋迴路，再提出可被推翻的假設逐一驗證。","en":"Build a reliable reproduction loop first, then test falsifiable hypotheses one at a time.",
-     "whenZh":"bug 卡住、難以重現時。","whenEn":"When a bug is stuck or hard to reproduce."},
-    {"id":"doubt-check","plugin":"dev","version":"0.3.2","kind":"skill","step":"build","cond":true,"manual":false,"invoke":"/dev:doubt-check","source":"Adapted from Addy Osmani's doubt-driven (MIT)",
-     "zh":"在寫程式前，讓全新 context 的 reviewer 只拿產物和契約，對高風險決定做對抗式複查。","en":"Before writing code, let a fresh-context reviewer attack a high-risk decision using only the artifact and its contract.",
-     "whenZh":"任務文件標了高風險決定時。","whenEn":"When the task document flags a high-risk decision."},
-    {"id":"flutter-ui-compare","plugin":"dev-web","version":"0.1.1","kind":"skill","step":"build","cond":true,"manual":false,"invoke":"/dev-web:flutter-ui-compare",
-     "zh":"把網頁畫面與 Flutter Web 並排量測，逐個元素比對座標、字型與狀態。","en":"Measure a web page side by side with its Flutter Web original; compare coordinates, fonts and states per element.",
-     "whenZh":"網頁重寫、需要和舊畫面一致時。","whenEn":"When rewriting a screen and it must match the original."},
-    {"id":"stack-review","plugin":"dev","version":"1.10.0","kind":"skill","step":"review","cond":false,"manual":false,"invoke":"/dev:stack-review",
-     "zh":"自動判斷技術棧，套用對應清單審查；同時另派 subagent 對照任務文件，規範與 spec 兩軸分開列。","en":"Detect the tech stack and review against its checklist; a second subagent checks the diff against the task document, reported separately.",
-     "whenZh":"開發完成、送審之前。","whenEn":"After implementation, before submitting."},
-    {"id":"code-reviewer","plugin":"dev","version":"","kind":"agent","step":"review","cond":false,"manual":false,"invoke":"(called by stack-review)",
-     "zh":"stack-review 呼叫的深度審查 subagent。","en":"The deep-review subagent that stack-review calls.",
-     "whenZh":"由 stack-review 自動叫用。","whenEn":"Invoked automatically by stack-review."},
-    {"id":"ai-pair","plugin":"dev","version":"5.0.0","kind":"skill","step":"review","cond":true,"manual":true,"invoke":"/dev:ai-pair","claudeOnly":true,
-     "zh":"複雜需求用：外部 CLI 實作，多家模型分別 review，取代一般的開發與審查兩步。","en":"For complex work: an external CLI implements and several models review, replacing the normal build and review steps.",
-     "whenZh":"需求複雜、已有需求文件時，手動叫用。","whenEn":"For complex work with a requirements document; invoked manually."},
-    {"id":"doc-update","plugin":"dev","version":"1.4.0","kind":"skill","step":"wrap","cond":false,"manual":false,"invoke":"/dev:doc-update",
-     "zh":"任務文件標為已完成、更新變更記錄與索引，並做沉澱判斷：這次學到的東西要不要留、用什麼形式留。","en":"Mark the task document done, update the changelog and index, and decide what is worth keeping from this task and in what form.",
-     "whenZh":"審查通過後。","whenEn":"After review passes."},
-    {"id":"pr","plugin":"dev","version":"","kind":"skill","step":"wrap","cond":false,"manual":false,"invoke":"/dev:pr","source":"Matt Pocock (MIT), adapted from Humanlayer's show-me",
-     "zh":"寫 MR 說明：摘要、前後對照、合併風險。","en":"Write the merge-request description: summary, before/after, merge risks.",
-     "whenZh":"收尾之後、人工開 MR 之前。","whenEn":"After wrap-up, before a person opens the MR."},
-    {"id":"project-documentation","plugin":"dev","version":"2.2.2","kind":"skill","step":"side","cond":true,"manual":false,"invoke":"/dev:project-documentation",
-     "zh":"背景維護現況文件：架構、功能模組、API、bug 紀錄、widget、變更歷程。","en":"Maintain current-state docs in the background: architecture, modules, API, bug records, widgets, change history.",
-     "whenZh":"文件落後程式碼時。","whenEn":"When docs lag behind the code."},
-    {"id":"multiagent-handoff","plugin":"core","version":"0.6.0","kind":"skill","step":"side","cond":true,"manual":false,"invoke":"/core:multiagent-handoff",
-     "zh":"跨 AI agent 接力：存狀態、接手、分派、回報、驗收。","en":"Hand work across AI agents: save state, resume, delegate, report, review.",
-     "whenZh":"額度快用完、要交給其他 agent 時。","whenEn":"When quota runs low and another agent takes over."},
-    {"id":"grill-me","plugin":"core","version":"","kind":"skill","step":"side","cond":true,"manual":true,"invoke":"/core:grill-me","source":"Matt Pocock (MIT)",
-     "zh":"想被追問、檢驗自己的想法時手動叫用。","en":"Invoke manually to stress-test a plan or idea.",
-     "whenZh":"手動叫用。","whenEn":"Manual only."},
-    {"id":"retro","plugin":"core","version":"","kind":"skill","step":"side","cond":true,"manual":true,"invoke":"/core:retro","source":"Matt Pocock (MIT)",
-     "zh":"回顧這個 session，提出對 agent 工作環境（規則、skill、檢查）的改善建議。","en":"Review the session and suggest improvements to the agent's environment (rules, skills, checks).",
-     "whenZh":"session 結束後手動叫用。","whenEn":"Manual only, after a session."},
-    {"id":"writing-for-agents","plugin":"core","version":"","kind":"skill","step":"side","cond":true,"manual":false,"invoke":"/core:writing-for-agents","source":"Matt Pocock (MIT)",
-     "zh":"寫給 agent 看的文件（skill、AGENTS.md）的規範。","en":"Guidelines for documents written for agents (skills, AGENTS.md).",
-     "whenZh":"改 skill 或 AGENTS.md 時自動觸發。","whenEn":"Triggers when editing skills or AGENTS.md."},
-    {"id":"cross-platform-archive-agent","plugin":"core","version":"1.0.0","kind":"skill","step":"side","cond":true,"manual":false,"invoke":"/core:cross-platform-archive-agent",
-     "zh":"依目標平台產生壓縮指令，排除系統垃圾檔。","en":"Generate archive commands for the target platform, excluding OS junk files.",
-     "whenZh":"要壓縮打包資料夾時。","whenEn":"When archiving a folder."}
-  ]
+ "plugins": [
+  {
+   "id": "core",
+   "zh": "共同層：所有角色都啟用",
+   "en": "Common layer, enabled for every role",
+   "deps": []
+  },
+  {
+   "id": "dev",
+   "zh": "開發主流程",
+   "en": "Main development workflow",
+   "deps": [
+    "core"
+   ]
+  },
+  {
+   "id": "dev-app",
+   "zh": "行動 App 專屬",
+   "en": "Mobile app specific",
+   "deps": [
+    "dev"
+   ]
+  },
+  {
+   "id": "dev-web",
+   "zh": "網頁前端專屬",
+   "en": "Web frontend specific",
+   "deps": [
+    "dev"
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "id": "req",
+   "zh": "① 需求",
+   "en": "1. Requirements",
+   "color": "#e8590c"
+  },
+  {
+   "id": "build",
+   "zh": "② 開發",
+   "en": "2. Build",
+   "color": "#e11d48"
+  },
+  {
+   "id": "review",
+   "zh": "③ 審查",
+   "en": "3. Review",
+   "color": "#059669"
+  },
+  {
+   "id": "wrap",
+   "zh": "④ 收尾",
+   "en": "4. Wrap-up",
+   "color": "#0891b2"
+  },
+  {
+   "id": "side",
+   "zh": "隨時可用",
+   "en": "Any time",
+   "color": "#b45309"
+  }
+ ],
+ "roles": [
+  {
+   "zh": "一般開發",
+   "en": "General development",
+   "plugins": [
+    "core",
+    "dev"
+   ]
+  },
+  {
+   "zh": "App 專案",
+   "en": "App project",
+   "plugins": [
+    "core",
+    "dev",
+    "dev-app"
+   ]
+  },
+  {
+   "zh": "網頁前端專案",
+   "en": "Web frontend project",
+   "plugins": [
+    "core",
+    "dev",
+    "dev-web"
+   ]
+  },
+  {
+   "zh": "App＋網頁並存的專案",
+   "en": "Project with both app and web",
+   "plugins": [
+    "core",
+    "dev",
+    "dev-app",
+    "dev-web"
+   ]
+  },
+  {
+   "zh": "後端專案",
+   "en": "Backend project",
+   "plugins": [
+    "core",
+    "dev"
+   ]
+  },
+  {
+   "zh": "非開發工作",
+   "en": "Non-development work",
+   "plugins": [
+    "core"
+   ]
+  }
+ ],
+ "skills": [
+  {
+   "id": "figma-to-requirements",
+   "plugin": "dev-app",
+   "version": "1.0.2",
+   "kind": "skill",
+   "step": "req",
+   "cond": true,
+   "manual": false,
+   "invoke": "/dev-app:figma-to-requirements",
+   "zh": "把設計稿截圖對應到專案的設計 token，產出 token 對應表與狀態矩陣，再交給 requirements。",
+   "en": "Map design screenshots to the project's design tokens; produce a token table and state matrix, then hand off to requirements.",
+   "whenZh": "有設計稿才做。",
+   "whenEn": "Only when a design file exists.",
+   "shortZh": "設計稿對應 token",
+   "shortEn": "map design to tokens",
+   "whens": [
+    {
+     "zh": "有設計稿，要對應到專案的設計 token",
+     "en": "You have a design file to map onto the project's design tokens",
+     "to": "figma-to-requirements"
+    },
+    {
+     "zh": "沒有設計稿，直接寫任務文件",
+     "en": "No design file; go straight to the task document",
+     "to": "requirements"
+    }
+   ]
+  },
+  {
+   "id": "requirements",
+   "plugin": "dev",
+   "version": "1.8.0",
+   "kind": "skill",
+   "step": "req",
+   "cond": false,
+   "manual": false,
+   "invoke": "/dev:requirements",
+   "zh": "先讀既有文件並判斷可信度，再翻原始碼；產出含影響範圍、風險、任務與驗證方式的任務文件。",
+   "en": "Read existing docs and judge their reliability, then read the source; produce a task document with impact, risks, tasks and verification.",
+   "whenZh": "開發前，把模糊需求變成可實作的文件。",
+   "whenEn": "Before coding, to turn a vague request into an implementable document.",
+   "shortZh": "需求變任務文件",
+   "shortEn": "request → task doc",
+   "whens": [
+    {
+     "zh": "需求要變成別人讀完就能實作的文件",
+     "en": "A request must become a document someone can implement from",
+     "to": "requirements"
+    },
+    {
+     "zh": "需求模糊、只有人能決定",
+     "en": "The request is ambiguous and only a person can decide",
+     "to": "grilling"
+    },
+    {
+     "zh": "有設計稿要先對應 token",
+     "en": "A design file needs mapping first",
+     "to": "figma-to-requirements"
+    }
+   ]
+  },
+  {
+   "id": "grilling",
+   "plugin": "core",
+   "version": "",
+   "kind": "skill",
+   "step": "req",
+   "cond": true,
+   "manual": false,
+   "invoke": "/core:grilling",
+   "source": "Matt Pocock (MIT)",
+   "zh": "反覆追問，只問查不到、只有人能決定的事，直到需求沒有模糊地帶。",
+   "en": "Keep asking, only about what cannot be looked up and only a person can decide, until nothing is ambiguous.",
+   "whenZh": "需求模糊時，由 requirements 叫用。",
+   "whenEn": "When a request is ambiguous; called by requirements.",
+   "shortZh": "追問到沒有模糊",
+   "shortEn": "ask until clear",
+   "whens": [
+    {
+     "zh": "需求有多種解讀，會改變影響範圍",
+     "en": "The request has several readings that change the scope",
+     "to": "grilling"
+    },
+    {
+     "zh": "想檢驗自己的想法",
+     "en": "You want your own idea stress-tested",
+     "to": "grill-me"
+    }
+   ]
+  },
+  {
+   "id": "tdd",
+   "plugin": "dev",
+   "version": "",
+   "kind": "skill",
+   "step": "build",
+   "cond": false,
+   "manual": false,
+   "invoke": "/dev:tdd",
+   "source": "Matt Pocock (MIT)",
+   "zh": "測試先行：先約定介面，一個測試配一段實作，紅燈、綠燈、重構。",
+   "en": "Test first: agree on the interface, one test per slice of implementation; red, green, refactor.",
+   "whenZh": "新程式、有測試基礎的程式。",
+   "whenEn": "For new code or code that already has a test setup.",
+   "shortZh": "測試先行",
+   "shortEn": "test first",
+   "whens": [
+    {
+     "zh": "寫新程式，想先約定介面再實作",
+     "en": "Writing new code and want the interface agreed before implementing",
+     "to": "tdd"
+    },
+    {
+     "zh": "bug 卡住、重現不了",
+     "en": "A bug is stuck and won't reproduce",
+     "to": "diagnosing-bugs"
+    }
+   ]
+  },
+  {
+   "id": "diagnosing-bugs",
+   "plugin": "dev",
+   "version": "",
+   "kind": "skill",
+   "step": "build",
+   "cond": true,
+   "manual": false,
+   "invoke": "/dev:diagnosing-bugs",
+   "source": "Matt Pocock (MIT)",
+   "zh": "先做出能穩定重現的回饋迴路，再提出可被推翻的假設逐一驗證。",
+   "en": "Build a reliable reproduction loop first, then test falsifiable hypotheses one at a time.",
+   "whenZh": "bug 卡住、難以重現時。",
+   "whenEn": "When a bug is stuck or hard to reproduce.",
+   "shortZh": "先重現再修",
+   "shortEn": "reproduce, then fix",
+   "whens": [
+    {
+     "zh": "bug 難以重現、試了幾次都沒修好",
+     "en": "A bug is hard to reproduce and fixes keep failing",
+     "to": "diagnosing-bugs"
+    }
+   ]
+  },
+  {
+   "id": "doubt-check",
+   "plugin": "dev",
+   "version": "0.3.2",
+   "kind": "skill",
+   "step": "build",
+   "cond": true,
+   "manual": false,
+   "invoke": "/dev:doubt-check",
+   "source": "Adapted from Addy Osmani's doubt-driven (MIT)",
+   "zh": "在寫程式前，讓全新 context 的 reviewer 只拿產物和契約，對高風險決定做對抗式複查。",
+   "en": "Before writing code, let a fresh-context reviewer attack a high-risk decision using only the artifact and its contract.",
+   "whenZh": "任務文件標了高風險決定時。",
+   "whenEn": "When the task document flags a high-risk decision.",
+   "shortZh": "高風險決定複查",
+   "shortEn": "challenge risky decisions",
+   "whens": [
+    {
+     "zh": "任務文件標了高風險決定，寫程式之前",
+     "en": "The task document flags a high-risk decision; before coding",
+     "to": "doubt-check"
+    },
+    {
+     "zh": "要動到多個風險區塊的複雜需求",
+     "en": "Complex work touching several risky areas",
+     "to": "ai-pair"
+    }
+   ]
+  },
+  {
+   "id": "flutter-ui-compare",
+   "plugin": "dev-web",
+   "version": "0.1.1",
+   "kind": "skill",
+   "step": "build",
+   "cond": true,
+   "manual": false,
+   "invoke": "/dev-web:flutter-ui-compare",
+   "zh": "把網頁畫面與 Flutter Web 並排量測，逐個元素比對座標、字型與狀態。",
+   "en": "Measure a web page side by side with its Flutter Web original; compare coordinates, fonts and states per element.",
+   "whenZh": "網頁重寫、需要和舊畫面一致時。",
+   "whenEn": "When rewriting a screen and it must match the original.",
+   "shortZh": "畫面並排量測",
+   "shortEn": "measure UI side by side",
+   "whens": [
+    {
+     "zh": "網頁重寫，要和原本的 Flutter Web 畫面一致",
+     "en": "Rewriting a screen that must match the Flutter Web original",
+     "to": "flutter-ui-compare"
+    }
+   ]
+  },
+  {
+   "id": "stack-review",
+   "plugin": "dev",
+   "version": "1.10.0",
+   "kind": "skill",
+   "step": "review",
+   "cond": false,
+   "manual": false,
+   "invoke": "/dev:stack-review",
+   "zh": "自動判斷技術棧，套用對應清單審查；同時另派 subagent 對照任務文件，規範與 spec 兩軸分開列。",
+   "en": "Detect the tech stack and review against its checklist; a second subagent checks the diff against the task document, reported separately.",
+   "whenZh": "開發完成、送審之前。",
+   "whenEn": "After implementation, before submitting.",
+   "shortZh": "規範＋對照 spec",
+   "shortEn": "checklist + spec review",
+   "whens": [
+    {
+     "zh": "開發完成，要審規範也要對照任務文件",
+     "en": "Implementation is done; review standards and check against the task document",
+     "to": "stack-review"
+    },
+    {
+     "zh": "需求複雜，要多家模型一起審",
+     "en": "Complex work that needs several models to review",
+     "to": "ai-pair"
+    }
+   ]
+  },
+  {
+   "id": "code-reviewer",
+   "plugin": "dev",
+   "version": "",
+   "kind": "agent",
+   "step": "review",
+   "cond": false,
+   "manual": false,
+   "invoke": "(called by stack-review)",
+   "zh": "stack-review 呼叫的深度審查 subagent。",
+   "en": "The deep-review subagent that stack-review calls.",
+   "whenZh": "由 stack-review 自動叫用。",
+   "whenEn": "Invoked automatically by stack-review.",
+   "shortZh": "深度審查 agent",
+   "shortEn": "deep-review agent",
+   "whens": [
+    {
+     "zh": "由 stack-review 自動派出，不用自己叫",
+     "en": "Dispatched by stack-review; you don't call it yourself",
+     "to": "stack-review"
+    }
+   ]
+  },
+  {
+   "id": "ai-pair",
+   "plugin": "dev",
+   "version": "5.0.0",
+   "kind": "skill",
+   "step": "review",
+   "cond": true,
+   "manual": true,
+   "invoke": "/dev:ai-pair",
+   "claudeOnly": true,
+   "zh": "複雜需求用：外部 CLI 實作，多家模型分別 review，取代一般的開發與審查兩步。",
+   "en": "For complex work: an external CLI implements and several models review, replacing the normal build and review steps.",
+   "whenZh": "需求複雜、已有需求文件時，手動叫用。",
+   "whenEn": "For complex work with a requirements document; invoked manually.",
+   "shortZh": "多模型實作與審查",
+   "shortEn": "multi-model build + review",
+   "whens": [
+    {
+     "zh": "需求複雜，且已有需求文件",
+     "en": "Complex work with a requirements document in hand",
+     "to": "ai-pair"
+    },
+    {
+     "zh": "一般大小的任務",
+     "en": "A normal-sized task",
+     "to": "stack-review"
+    }
+   ]
+  },
+  {
+   "id": "doc-update",
+   "plugin": "dev",
+   "version": "1.4.0",
+   "kind": "skill",
+   "step": "wrap",
+   "cond": false,
+   "manual": false,
+   "invoke": "/dev:doc-update",
+   "zh": "任務文件標為已完成、更新變更記錄與索引，並做沉澱判斷：這次學到的東西要不要留、用什麼形式留。",
+   "en": "Mark the task document done, update the changelog and index, and decide what is worth keeping from this task and in what form.",
+   "whenZh": "審查通過後。",
+   "whenEn": "After review passes.",
+   "shortZh": "收尾與沉澱判斷",
+   "shortEn": "close out + keep lessons",
+   "whens": [
+    {
+     "zh": "審查通過，要把文件標完成並更新變更記錄",
+     "en": "Review passed; mark docs done and update the changelog",
+     "to": "doc-update"
+    },
+    {
+     "zh": "想回顧整個 session 的工作環境",
+     "en": "You want to review the session's working environment",
+     "to": "retro"
+    }
+   ]
+  },
+  {
+   "id": "pr",
+   "plugin": "dev",
+   "version": "",
+   "kind": "skill",
+   "step": "wrap",
+   "cond": false,
+   "manual": false,
+   "invoke": "/dev:pr",
+   "source": "Matt Pocock (MIT), adapted from Humanlayer's show-me",
+   "zh": "寫 MR 說明：摘要、前後對照、合併風險。",
+   "en": "Write the merge-request description: summary, before/after, merge risks.",
+   "whenZh": "收尾之後、人工開 MR 之前。",
+   "whenEn": "After wrap-up, before a person opens the MR.",
+   "shortZh": "寫 MR 說明",
+   "shortEn": "write the MR description",
+   "whens": [
+    {
+     "zh": "收尾完成，要寫 MR 說明給人看",
+     "en": "Wrap-up is done; write the MR description for reviewers",
+     "to": "pr"
+    }
+   ]
+  },
+  {
+   "id": "project-documentation",
+   "plugin": "dev",
+   "version": "2.2.2",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": false,
+   "invoke": "/dev:project-documentation",
+   "zh": "背景維護現況文件：架構、功能模組、API、bug 紀錄、widget、變更歷程。",
+   "en": "Maintain current-state docs in the background: architecture, modules, API, bug records, widgets, change history.",
+   "whenZh": "文件落後程式碼時。",
+   "whenEn": "When docs lag behind the code.",
+   "shortZh": "維護現況文件",
+   "shortEn": "keep current-state docs",
+   "whens": [
+    {
+     "zh": "架構或 API 文件落後程式碼",
+     "en": "Architecture or API docs lag behind the code",
+     "to": "project-documentation"
+    }
+   ]
+  },
+  {
+   "id": "multiagent-handoff",
+   "plugin": "core",
+   "version": "0.6.0",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": false,
+   "invoke": "/core:multiagent-handoff",
+   "zh": "跨 AI agent 接力：存狀態、接手、分派、回報、驗收。",
+   "en": "Hand work across AI agents: save state, resume, delegate, report, review.",
+   "whenZh": "額度快用完、要交給其他 agent 時。",
+   "whenEn": "When quota runs low and another agent takes over.",
+   "shortZh": "跨 agent 接力",
+   "shortEn": "hand off across agents",
+   "whens": [
+    {
+     "zh": "額度快用完，要交給別的 agent 接手",
+     "en": "Quota is running low; another agent should take over",
+     "to": "multiagent-handoff"
+    }
+   ]
+  },
+  {
+   "id": "grill-me",
+   "plugin": "core",
+   "version": "",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": true,
+   "invoke": "/core:grill-me",
+   "source": "Matt Pocock (MIT)",
+   "zh": "想被追問、檢驗自己的想法時手動叫用。",
+   "en": "Invoke manually to stress-test a plan or idea.",
+   "whenZh": "手動叫用。",
+   "whenEn": "Manual only.",
+   "shortZh": "追問你的想法",
+   "shortEn": "stress-test your idea",
+   "whens": [
+    {
+     "zh": "想被追問、檢驗計畫",
+     "en": "You want a plan interrogated",
+     "to": "grill-me"
+    }
+   ]
+  },
+  {
+   "id": "retro",
+   "plugin": "core",
+   "version": "",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": true,
+   "invoke": "/core:retro",
+   "source": "Matt Pocock (MIT)",
+   "zh": "回顧這個 session，提出對 agent 工作環境（規則、skill、檢查）的改善建議。",
+   "en": "Review the session and suggest improvements to the agent's environment (rules, skills, checks).",
+   "whenZh": "session 結束後手動叫用。",
+   "whenEn": "Manual only, after a session.",
+   "shortZh": "回顧工作環境",
+   "shortEn": "review the environment",
+   "whens": [
+    {
+     "zh": "session 結束，想改善規則與 skill",
+     "en": "A session ended; improve rules and skills",
+     "to": "retro"
+    }
+   ]
+  },
+  {
+   "id": "writing-for-agents",
+   "plugin": "core",
+   "version": "",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": false,
+   "invoke": "/core:writing-for-agents",
+   "source": "Matt Pocock (MIT)",
+   "zh": "寫給 agent 看的文件（skill、AGENTS.md）的規範。",
+   "en": "Guidelines for documents written for agents (skills, AGENTS.md).",
+   "whenZh": "改 skill 或 AGENTS.md 時自動觸發。",
+   "whenEn": "Triggers when editing skills or AGENTS.md.",
+   "shortZh": "給 agent 的文件規範",
+   "shortEn": "writing for agents",
+   "whens": [
+    {
+     "zh": "要改 skill 或 AGENTS.md",
+     "en": "Editing a skill or AGENTS.md",
+     "to": "writing-for-agents"
+    }
+   ]
+  },
+  {
+   "id": "cross-platform-archive-agent",
+   "plugin": "core",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": "side",
+   "cond": true,
+   "manual": false,
+   "invoke": "/core:cross-platform-archive-agent",
+   "zh": "依目標平台產生壓縮指令，排除系統垃圾檔。",
+   "en": "Generate archive commands for the target platform, excluding OS junk files.",
+   "whenZh": "要壓縮打包資料夾時。",
+   "whenEn": "When archiving a folder.",
+   "shortZh": "跨平台壓縮指令",
+   "shortEn": "cross-platform archive",
+   "whens": [
+    {
+     "zh": "要壓縮資料夾給別的平台解開",
+     "en": "Archiving a folder for another platform",
+     "to": "cross-platform-archive-agent"
+    }
+   ]
+  }
+ ]
 }

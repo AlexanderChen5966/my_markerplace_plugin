@@ -1,47 +1,80 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Personal Dev Workflow Plugins 個人開發流程</title>
-<meta name="description" content="個人開發流程的 skill 與 agent，分成四個 plugin。 A personal development workflow packaged as four Claude Code plugins.">
+<title>dev-workflow 個人開發流程</title>
+<meta name="description" content="個人開發流程的 skill 與 agent，分成四個 Claude Code plugin。 A personal development workflow packaged as four Claude Code plugins.">
 <link rel="stylesheet" href="assets/style.css"></head><body>
-<nav class="nav" aria-label="main"><strong>alexanderchen5966-marketplace</strong>
-<a href="#flow">流程 Flow</a><a href="#plugins">Plugins</a><a href="#skills">Skills</a><a href="map/">互動地圖 Map</a><a id="gh" href="#">GitHub</a></nav>
-<main>
-<header style="display:flex;flex-direction:column;gap:14px">
-<div class="eyebrow">Claude Code plugins</div>
-<h1>個人開發流程<span class="en">A personal development workflow, packaged as plugins</span></h1>
-<p>把一張需求從「想清楚」到「開 MR」的做法，拆成可獨立啟用的 skill 與 agent，依專案類型決定要啟用哪幾包。<span class="en">The path from a vague request to a merge request, split into small skills and agents. Each project type enables only the plugins it needs.</span></p>
-<a class="cta" href="map/">開啟互動地圖 Open the interactive map →</a>
-</header>
+<div class="top"><div class="wrap">
+<a class="brand" href="./"><span class="logo"><i></i><i></i><i></i></span>dev-workflow <span class="pill" id="count"></span></a>
+<a class="lk" href="#how">How it works</a><a class="lk" href="#map">Skill map</a><a class="lk" href="#plugins">Plugins</a><a class="lk" href="#skills">Skills</a>
+<a class="btn" id="gh" href="#">GitHub</a><button class="btn" id="theme" type="button" aria-label="Toggle theme">◐</button></div></div>
 
-<section id="flow"><h2>主流程 Main flow<span class="en">One straight line; dashed items run only when a condition holds</span></h2>
-<p>主流程是一條直線。虛線的 skill 只在有條件時才叫：需求模糊、有設計稿、bug 卡住、高風險決定。複雜需求時，③ 的審查改走 ai-pair。<span class="en">The flow is linear. Dashed skills run conditionally: ambiguous request, a design file, a stuck bug, a high-risk decision. For complex work, ai-pair replaces build and review.</span></p>
-<div class="steps" id="steps"></div>
-<p style="color:var(--muted);font-size:13px">commit、push、開 MR 一律由人處理，agent 不自動執行。<span class="en">Committing, pushing and opening the MR are always done by a person; agents never do it automatically.</span></p></section>
+<div class="wrap">
+<section class="hero">
+<span class="logo"><i></i><i></i><i></i></span>
+<h1>dev-workflow</h1>
+<p class="tag">從模糊的需求，到附上證據的 MR。<br><span class="en">From a vague request to a merge request with proof.</span></p>
+<p class="sub" id="sub"></p>
+<div class="row"><a class="btn primary" href="map/">See the skill map 看流程地圖</a><a class="btn" id="gh2" href="#">GitHub</a><a class="btn" href="#how">▶ Watch a ticket 看一張票怎麼走</a></div>
+</section>
 
-<section id="plugins"><h2>四個 Plugins<span class="en">Four plugins, enabled by project type</span></h2>
-<div class="grid" id="plugin-cards"></div>
-<h3>依專案類型啟用 Enabled by project type</h3>
+<section class="sec" id="map"><h2>The skill map 流程地圖</h2>
+<p class="lead">每個 skill、每個階段，以及它們怎麼接起來。點一格看它什麼時候用。<br><span class="en">Every skill and stage, and how they connect. Click a node to see when to use it.</span></p>
+<div class="embed"><iframe src="map/?embed=1" title="Skill map" loading="lazy"></iframe></div>
+<p style="margin:10px 0 0"><a href="map/">Open full screen 全螢幕開啟 ↗</a></p></section>
+
+<section class="sec" id="how"><h2>Watch a ticket 看一張票怎麼走</h2>
+<p class="lead">每張票依序走過需求、開發、審查、收尾；審查沒過會退回開發。最後的 commit、push、開 MR 一律由人處理。<br><span class="en">Each ticket moves through requirements, build, review and wrap-up; a failed review sends it back to build. Committing, pushing and opening the MR are always done by a person.</span></p>
+<div class="lanes" id="lanes"></div>
+<p style="margin:12px 0 0"><button class="btn" id="pause" type="button">Pause 暫停</button></p></section>
+
+<section class="sec" id="plugins"><h2>4 plugins</h2>
+<p class="lead">skill 依用途分成四包，專案類型決定啟用哪幾包。<br><span class="en">Skills are grouped into four plugins; the project type decides which ones are enabled.</span></p>
+<div class="cards" id="plugin-cards"></div>
+<p class="sub-h">依專案類型啟用 <small>Enabled by project type</small></p>
 <div class="tw"><table id="roles"></table></div></section>
 
-<section id="skills"><h2>Skills 與 agent<span class="en">Skills and agents</span></h2>
-<div class="grid" id="skill-cards"></div></section>
+<section class="sec" id="skills"><h2 id="skills-h"></h2>
+<p class="lead" id="skills-lead"></p>
+<div id="skill-groups"></div>
+<p class="note">Uses: Matt Pocock skills (MIT) — grilling, grill-me, diagnosing-bugs, tdd, pr, writing-for-agents, retro · doubt-check adapted from Addy Osmani's doubt-driven (MIT) · pr adapted from Humanlayer's show-me.<br>授權全文隨 plugin 附上。<span class="en"> License texts ship with the plugins.</span></p></section>
+</div>
+<footer class="foot"><div class="wrap"><span class="sp">© alexanderchen5966</span><a id="gh3" href="#">GitHub</a><a href="map/">Skill map</a></div></footer>
 
-<section><h2>來源與致謝 Credits</h2>
-<p>部分 skill 來自或改寫自他人的開源作品，皆為 MIT 授權，授權全文隨 plugin 附上。<span class="en">Some skills come from, or are adapted from, other people's open-source work, all MIT-licensed; license texts ship with the plugins.</span></p>
-<ul><li>Matt Pocock skills (MIT): grilling, grill-me, diagnosing-bugs, tdd, pr, writing-for-agents, retro</li>
-<li>doubt-check: adapted from Addy Osmani's doubt-driven (MIT)</li>
-<li>pr: adapted from Humanlayer's show-me</li></ul></section>
-</main>
-<footer>© alexanderchen5966 · <a id="gh2" href="#">GitHub</a></footer>
 <script src="assets/site.js"></script>
 <script>
+SITE.theme(document.getElementById("theme"));
+const E=SITE.esc, strip=s=>s.replace(/^[①-⑨]\s*|^\d+\.\s*/,"");
 SITE.load("").then(d=>{
- document.getElementById("gh").href=document.getElementById("gh2").href=SITE.repo;
- const by=id=>d.skills.filter(s=>s.step===id);
- document.getElementById("steps").innerHTML=d.steps.filter(s=>s.id!=="side").map(st=>`<div class="step"><h3>${SITE.bi(st.zh,st.en)}</h3><div class="skills">${by(st.id).map(s=>`<span class="chip${s.cond?" cond":""}">${s.id}</span>`).join("")}</div></div>`).join("");
- document.getElementById("plugin-cards").innerHTML=d.plugins.map(p=>`<div class="card"><h3><code>${p.id}</code></h3><p>${SITE.bi(p.zh,p.en)}</p><p style="font-size:13px;color:var(--muted)">${p.deps.length?"依賴 depends on: "+p.deps.join(", "):"無依賴 no dependencies"}</p><div class="skills">${d.skills.filter(s=>s.plugin===p.id).map(s=>`<span class="chip${s.cond?" cond":""}">${s.id}</span>`).join(" ")}</div></div>`).join("");
- document.getElementById("roles").innerHTML="<tr><th>專案類型 Project type</th>"+d.plugins.map(p=>`<th>${p.id}</th>`).join("")+"</tr>"+d.roles.map(r=>`<tr><td>${SITE.bi(r.zh,r.en)}</td>${d.plugins.map(p=>`<td>${r.plugins.includes(p.id)?"●":""}</td>`).join("")}</tr>`).join("");
- const groups=[["你輸入的指令 Commands you type",s=>s.manual],["模型會自動叫用 Invoked by the model",s=>!s.manual]];
- document.getElementById("skill-cards").innerHTML=d.skills.map(s=>`<div class="card"><h3><code>${s.id}</code> <small style="font-weight:400;color:var(--muted)">${s.plugin}${s.version?" · v"+s.version:""}</small></h3><div>${SITE.badges(s)}</div><p>${SITE.bi(s.zh,s.en)}</p><p style="font-size:13px">${SITE.bi(s.whenZh,s.whenEn)}</p><p style="font-size:12px"><code>${SITE.esc(s.invoke)}</code></p></div>`).join("");
+ ["gh","gh2","gh3"].forEach(i=>document.getElementById(i).href=SITE.repo);
+ const skills=d.skills.filter(s=>s.kind==="skill"), agents=d.skills.filter(s=>s.kind==="agent");
+ const manual=skills.filter(s=>s.manual), auto=skills.filter(s=>!s.manual);
+ document.getElementById("count").textContent=d.plugins.length+" plugins";
+ document.getElementById("sub").innerHTML=`給 Claude Code 用的個人開發流程。${skills.length} 個 skill（${manual.length} 個只能手動叫）· ${agents.length} 個 agent · ${d.plugins.length} 個 plugin<br><span class="en">A personal development workflow for Claude Code. ${skills.length} skills (${manual.length} manual-only) · ${agents.length} agent · ${d.plugins.length} plugins.</span>`;
+ // plugins
+ document.getElementById("plugin-cards").innerHTML=d.plugins.map(p=>`<div class="card"><span class="kicker">${p.deps.length?"depends on "+p.deps.join(", "):"no dependencies"}</span><h3>${p.id}</h3><p>${E(p.zh)}</p><p class="en">${E(p.en)}</p><p class="en mono" style="font-size:12px">${d.skills.filter(s=>s.plugin===p.id).map(s=>s.id).join(" · ")}</p></div>`).join("");
+ document.getElementById("roles").innerHTML="<tr><th>專案類型 Project type</th>"+d.plugins.map(p=>`<th>${p.id}</th>`).join("")+"</tr>"+d.roles.map(r=>`<tr><td>${E(r.zh)} <span class="en">${E(r.en)}</span></td>${d.plugins.map(p=>`<td>${r.plugins.includes(p.id)?"●":""}</td>`).join("")}</tr>`).join("");
+ // skills
+ document.getElementById("skills-h").textContent=d.skills.length+" skills & agents";
+ document.getElementById("skills-lead").innerHTML=`${auto.length} 個模型會在對的時機自己叫用，${manual.length} 個只有你輸入才會跑，${agents.length} 個是被 skill 派出的 agent。<br><span class="en">${auto.length} the model invokes at the right moment, ${manual.length} run only when you type them, ${agents.length} is an agent dispatched by a skill.</span>`;
+ const card=s=>`<a class="card" href="map/#skill=${s.id}"><span class="kicker">${E(strip(d.steps.find(t=>t.id===s.step).en))} · ${s.plugin}</span><h3>${s.kind==="agent"?"":"/"}${s.id}</h3><p>${E(s.zh)}</p><p class="en">${E(s.en)}</p><span class="chip">${E(s.invoke)}</span></a>`;
+ const grp=(t,sm,l)=>l.length?`<p class="sub-h">${t} <small>${sm}</small></p><div class="cards">${l.map(card).join("")}</div>`:"";
+ document.getElementById("skill-groups").innerHTML=grp("You type 你輸入的",manual.length+" skills",manual)+grp("The model runs 模型自己叫用的",auto.length+" skills",auto)+grp("Agents",agents.length+" agent",agents);
+ // lanes animation
+ const lanes=[{zh:"待辦",en:"Backlog",who:"you",c:"#6e7781"}].concat(d.steps.filter(s=>s.id!=="side").map(s=>({zh:strip(s.zh),en:strip(s.en),who:d.skills.filter(k=>k.step===s.id&&!k.cond).map(k=>k.id)[0],c:s.color}))).concat([{zh:"MR",en:"Merge request",who:"you",c:"#7c3aed"}]);
+ const titles=["Fix clear button","CSV export","Dark mode toggle","Retry failed sync","Login redirect"];
+ let pos,bounced,tick,timer=null;
+ const reset=()=>{pos=titles.map(()=>0);bounced=false;tick=0};
+ const draw=()=>{document.getElementById("lanes").innerHTML=lanes.map((l,i)=>`<div class="lane" style="--c:${l.c}"><header>${E(l.zh)} ${E(l.en)}<small>${E(l.who)}</small></header><div class="slot">${titles.map((t,k)=>pos[k]===i?`<div class="tk">#${k+1} ${E(t)}<small>${i===0?"todo":i===lanes.length-1?"ready for you":"running"}</small></div>`:"").join("")}</div></div>`).join("")};
+ const step=()=>{
+  if(pos.every(p=>p===lanes.length-1)){reset();draw();return}
+  const k=tick++%titles.length;
+  if(pos[k]===3&&k===1&&!bounced){pos[k]=2;bounced=true}          // 一張票審查沒過，退回開發
+  else if(pos[k]<lanes.length-1&&(k===0||pos[k-1]>pos[k]||pos[k-1]===lanes.length-1))pos[k]++;
+  draw();
+ };
+ const btn=document.getElementById("pause");
+ const play=()=>{timer=setInterval(step,700);btn.textContent="Pause 暫停"}, stop=()=>{clearInterval(timer);timer=null;btn.textContent="Play 播放"};
+ btn.addEventListener("click",()=>timer?stop():play());
+ reset();draw(); matchMedia("(prefers-reduced-motion: reduce)").matches?stop():play();
 });
 </script></body></html>
