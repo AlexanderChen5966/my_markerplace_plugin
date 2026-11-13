@@ -1,0 +1,9 @@
+{
+  "name": "teaching",
+  "displayName": "個人流程：教學備課",
+  "description": "教授備課用：NotebookLM 備課知識庫工具包（教案、簡報、測驗、評分標準、迷思累積、隱私把關），來自 notebooklm-teaching-v1.1-kit",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}

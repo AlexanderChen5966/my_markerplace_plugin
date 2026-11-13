@@ -26,6 +26,21 @@
       "name": "dev-web",
       "source": "./plugins/dev-web",
       "description": "網頁前端專屬：flutter-ui-compare（與 Flutter Web 並排量測比對）。依賴 dev。"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "UI/UX 設計：anti-ai-look（去 AI 味檢查，含 icon 規格）、design-review（唯讀畫面 review）、design-md-init（建立 DESIGN.md）。依賴 core。"
+    },
+    {
+      "name": "research",
+      "source": "./plugins/research",
+      "description": "學術研究：NotebookLM 研究知識庫工具包（14 個 skill：文獻探索、知識整理與合成、引用誠信查驗、每日簡報等）。需先用 kit 的 setup.sh 建立知識庫資料夾結構。依賴 core。"
+    },
+    {
+      "name": "teaching",
+      "source": "./plugins/teaching",
+      "description": "教學備課：NotebookLM 備課知識庫工具包（19 個 skill：教案、簡報、測驗、評分標準、迷思累積、隱私把關等）。需先用 kit 的 setup.sh 建立知識庫資料夾結構。依賴 core。"
     }
   ]
 }

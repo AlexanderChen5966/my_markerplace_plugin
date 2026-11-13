@@ -8,6 +8,7 @@
 #   ~/.agents/claude-only/skills/<skill> 只有 Claude 用（ai-pair、flutter-ui-compare），其他 agent 不讀
 #   ~/.agents/claude-only/agents/<檔>    Claude subagent（code-reviewer）
 #   ~/.agents/skills/<檔>                plugin 根目錄的附檔（MATTPOCOCK-SOURCE.md、LICENSE-mattpocock）
+# research、teaching 兩包的本體是 NotebookLM 工具包，由 sync-kits.sh 同步與檢查，這支腳本跳過它們。
 # 哪個 skill 屬於哪一包，以 plugins/<包>/skills/ 底下現有的資料夾為準；
 # 本體新增了 skill 但沒有任何一包收，check 會列出來，要自己決定放哪包（先 mkdir 該包的 skills/<名稱>）。
 set -u
@@ -40,6 +41,8 @@ compare_or_sync() {  # $1 本體 $2 複本 $3 顯示名稱
 declare -a packaged=()
 for pkg in "$PLUGINS"/*/; do
   p="$(basename "$pkg")"
+  # research、teaching 的本體是 NotebookLM 工具包，由 sync-kits.sh 管
+  case "$p" in research|teaching) echo "── ${p}（由 sync-kits.sh 管）"; continue ;; esac
   echo "── $p"
   for s in "$pkg"skills/*/; do
     [ -d "$s" ] || continue

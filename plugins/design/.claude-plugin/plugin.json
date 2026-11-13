@@ -1,0 +1,9 @@
+{
+  "name": "design",
+  "displayName": "個人流程：UI/UX 設計",
+  "description": "UI/UX 設計師用：anti-ai-look（去 AI 味檢查，含 icon 規格）、design-review（唯讀畫面 review）、design-md-init（建立 DESIGN.md）",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}

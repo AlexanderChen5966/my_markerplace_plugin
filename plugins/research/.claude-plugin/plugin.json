@@ -1,0 +1,9 @@
+{
+  "name": "research",
+  "displayName": "個人流程：學術研究",
+  "description": "教授做研究用：NotebookLM 研究知識庫工具包（文獻探索、知識整理與合成、引用誠信查驗、每日簡報），來自 notebooklm-v2.1.2-kit",
+  "version": "0.1.0",
+  "author": {
+    "name": "alexanderchen5966"
+  }
+}
