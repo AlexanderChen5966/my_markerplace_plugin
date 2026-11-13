@@ -29,6 +29,30 @@
    "deps": [
     "dev"
    ]
+  },
+  {
+   "id": "design",
+   "zh": "UI/UX 設計",
+   "en": "UI/UX design",
+   "deps": [
+    "core"
+   ]
+  },
+  {
+   "id": "research",
+   "zh": "學術研究知識庫",
+   "en": "Academic research knowledge base",
+   "deps": [
+    "core"
+   ]
+  },
+  {
+   "id": "teaching",
+   "zh": "教學備課知識庫",
+   "en": "Teaching-prep knowledge base",
+   "deps": [
+    "core"
+   ]
   }
  ],
  "steps": [
@@ -113,6 +137,30 @@
    "en": "Non-development work",
    "plugins": [
     "core"
+   ]
+  },
+  {
+   "zh": "UI/UX 設計",
+   "en": "UI/UX design",
+   "plugins": [
+    "core",
+    "design"
+   ]
+  },
+  {
+   "zh": "教授做研究",
+   "en": "Professor: research",
+   "plugins": [
+    "core",
+    "research"
+   ]
+  },
+  {
+   "zh": "教授備課",
+   "en": "Professor: teaching prep",
+   "plugins": [
+    "core",
+    "teaching"
    ]
   }
  ],
@@ -584,6 +632,440 @@
      "to": "cross-platform-archive-agent"
     }
    ]
+  },
+  {
+   "id": "anti-ai-look",
+   "plugin": "design",
+   "version": "0.1.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/design:anti-ai-look",
+   "zh": "檢查畫面、icon、文案有沒有沒經過選擇的 AI 預設值，逐條寫成立、不成立或沒法判斷。",
+   "en": "Check screens, icons and copy for unchosen AI defaults; each item is marked holds, does not hold, or cannot tell."
+  },
+  {
+   "id": "design-review",
+   "plugin": "design",
+   "version": "0.1.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/design:design-review",
+   "zh": "唯讀的畫面 review：對照 DESIGN.md 與去 AI 味清單，規格、AI 味、使用三軸分開列，不改任何檔案。",
+   "en": "Read-only screen review against DESIGN.md and the anti-AI-look list, reported on three separate axes; changes no files."
+  },
+  {
+   "id": "design-md-init",
+   "plugin": "design",
+   "version": "0.1.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/design:design-md-init",
+   "zh": "還沒有 DESIGN.md 時，先把色彩、字型、間距、圓角、元件與 icon 規格定下來。",
+   "en": "When there is no DESIGN.md yet, settle colors, type, spacing, radius, components and icon specs first."
+  },
+  {
+   "id": "paper-discovery",
+   "plugin": "research",
+   "version": "2.2.1",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:paper-discovery",
+   "zh": "用口語描述主題，改寫成多組查詢，到免金鑰的學術來源搜尋並收集論文。",
+   "en": "Describe a topic in plain language; it rewrites it into queries and collects papers from free academic sources."
+  },
+  {
+   "id": "raw-pipeline",
+   "plugin": "research",
+   "version": "1.6.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:raw-pipeline",
+   "zh": "批次處理待整理的素材：摘要、分類加標籤、更新索引與連結。",
+   "en": "Batch-process raw materials: summarize, classify and tag, then update the index and links."
+  },
+  {
+   "id": "knowledge-organizer",
+   "plugin": "research",
+   "version": "1.4.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:knowledge-organizer",
+   "zh": "用 TBRC 四層框架把單份素材整理成結構化筆記，並評估資產價值。",
+   "en": "Structure one source into a four-layer TBRC note and score its asset value."
+  },
+  {
+   "id": "knowledge-synthesizer",
+   "plugin": "research",
+   "version": "2.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:knowledge-synthesizer",
+   "zh": "把同主題的多篇筆記合成一篇高密度精粹（共識、角度、缺口、精華）。",
+   "en": "Distill several notes on one topic into a dense synthesis: consensus, angles, voids, essence."
+  },
+  {
+   "id": "knowledge-elevation",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:knowledge-elevation",
+   "zh": "從精粹條目往上提煉：跨來源合成、一句話洞察、跨主題概念框架。",
+   "en": "Elevate syntheses: cross-source patterns, one-line insights, cross-topic concept frameworks."
+  },
+  {
+   "id": "alignment-check",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:alignment-check",
+   "zh": "找出放錯條目的補充段落，建議搬到哪裡。",
+   "en": "Find supplementary paragraphs filed under the wrong entry and suggest where they belong."
+  },
+  {
+   "id": "citation-integrity-check",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:citation-integrity-check",
+   "zh": "查驗引用頁碼是否落在原文範圍內，以及每個論點是否真的被引用頁支撐。",
+   "en": "Check that cited page numbers exist in the source and that each claim is supported by the cited page."
+  },
+  {
+   "id": "wiki-health-check",
+   "plugin": "research",
+   "version": "1.4.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:wiki-health-check",
+   "zh": "每月巡檢知識庫：筆記間矛盾、無據論點、缺連結、過時內容、知識缺口。",
+   "en": "Monthly knowledge-base check: contradictions, unsupported claims, missing links, stale content, gaps."
+  },
+  {
+   "id": "daily-brief-generator",
+   "plugin": "research",
+   "version": "2.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:daily-brief-generator",
+   "zh": "掃描知識庫產出每日簡報：待處理素材、更新、統計與建議行動。",
+   "en": "Scan the knowledge base for a daily brief: pending materials, updates, stats and next actions."
+  },
+  {
+   "id": "notebooklm-skill",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:notebooklm-skill",
+   "zh": "與 Google NotebookLM 雙向橋接：上傳素材、語意問答並取回含頁碼的引用。",
+   "en": "Bridge to Google NotebookLM: upload sources, ask questions, get citations with page numbers."
+  },
+  {
+   "id": "paper-knowledge-backflow",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:paper-knowledge-backflow",
+   "zh": "論文定稿後，把方法決策、回覆審查意見等經驗回流進知識庫。",
+   "en": "After a paper is final, feed methodology decisions and reviewer responses back into the knowledge base."
+  },
+  {
+   "id": "synthesis-to-ars-export",
+   "plugin": "research",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:synthesis-to-ars-export",
+   "zh": "把精粹條目匯出成論文寫作工具可用的文獻回顧素材。",
+   "en": "Export syntheses as literature-review seeds for academic writing tools."
+  },
+  {
+   "id": "scientific-brainstorming",
+   "plugin": "research",
+   "version": "",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:scientific-brainstorming",
+   "zh": "開放式研究腦力激盪：跨領域連結、挑戰假設、找研究缺口。",
+   "en": "Open-ended research brainstorming: cross-disciplinary links, challenged assumptions, research gaps.",
+   "source": "K-Dense Inc. (MIT)"
+  },
+  {
+   "id": "obsidian-second-brain",
+   "plugin": "research",
+   "version": "",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/research:obsidian-second-brain",
+   "zh": "把 Obsidian 知識庫當成會自我改寫的第二大腦來讀寫與維護。",
+   "en": "Read, write and maintain an Obsidian vault as a self-rewriting second brain.",
+   "source": "Eugeniu Ghelbur (MIT)"
+  },
+  {
+   "id": "material-ingest",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:material-ingest",
+   "zh": "把課本、投影片、講義、影片字幕收進素材區，自動分區、轉檔、命名。",
+   "en": "Ingest textbooks, slides, handouts and video captions; sort, convert and name them automatically."
+  },
+  {
+   "id": "privacy-guard",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:privacy-guard",
+   "zh": "學生個資與著作權閘門：入庫前去識別化、上傳前驗證白名單，違反就停下。",
+   "en": "Student-privacy and copyright gate: de-identify before ingest, whitelist before upload, stop on violation."
+  },
+  {
+   "id": "unit-organizer",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:unit-organizer",
+   "zh": "把單份教材整理成逆向設計的單元條目（目標、診斷、評量、計畫）。",
+   "en": "Turn one source into a backward-design unit entry: objective, diagnosis, evidence, plan."
+  },
+  {
+   "id": "unit-synthesizer",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:unit-synthesizer",
+   "zh": "把同一概念的多個教材來源合成一篇教學版精粹。",
+   "en": "Synthesize several sources on one concept into a teaching-oriented summary."
+  },
+  {
+   "id": "lesson-plan-generator",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:lesson-plan-generator",
+   "zh": "單元條目變成可直接上課的教案：時間分配、指令、鷹架、備案，並排入已知學生迷思。",
+   "en": "Turn a unit entry into a ready-to-teach lesson plan, with timing, scaffolds, fallbacks and known misconceptions."
+  },
+  {
+   "id": "slide-builder",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:slide-builder",
+   "zh": "教案轉成投影片（Marp），一張一個訊息，附講者備忘稿。",
+   "en": "Turn a lesson plan into slides (Marp), one message per slide, with speaker notes."
+  },
+  {
+   "id": "quiz-generator",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:quiz-generator",
+   "zh": "先建雙向細目表再出題，每題附答案與評分要點，誘答選項對應真實迷思。",
+   "en": "Build a test blueprint first, then write items with answers; distractors map to real misconceptions."
+  },
+  {
+   "id": "rubric-builder",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:rubric-builder",
+   "zh": "建立四級評分規準，每個面向對應學習目標，拒絕模糊用詞。",
+   "en": "Build a four-level rubric tied to learning objectives, rejecting vague wording."
+  },
+  {
+   "id": "objective-alignment-check",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:objective-alignment-check",
+   "zh": "檢查學習目標、教學活動、評量三方是否一致。",
+   "en": "Check that objectives, activities and assessment line up."
+  },
+  {
+   "id": "feedback-drafter",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:feedback-drafter",
+   "zh": "依評分規準寫學生回饋初稿，必須經教師審核才可匯出，不產出分數。",
+   "en": "Draft student feedback from a rubric; teacher review is required before export; no grades."
+  },
+  {
+   "id": "misconception-miner",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:misconception-miner",
+   "zh": "從學生作答找出反覆出現的迷思，跨學期累積並提出教法檢討。",
+   "en": "Mine recurring misconceptions from student work, accumulate them across terms, suggest teaching changes."
+  },
+  {
+   "id": "teaching-backflow",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:teaching-backflow",
+   "zh": "把上完課的真實經驗回寫進單元條目，讓下一輪備課直接受益。",
+   "en": "Write real classroom outcomes back into unit entries so the next round benefits."
+  },
+  {
+   "id": "humanize-zh",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:humanize-zh",
+   "zh": "繁體中文去 AI 味改寫，依產出類型套用不同規則。",
+   "en": "Rewrite Traditional Chinese text to remove AI tone, with rules per output type."
+  },
+  {
+   "id": "course-health-check",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:course-health-check",
+   "zh": "每學期課程健檢：涵蓋率、空白單元、缺評分規準、對齊與教材過期。",
+   "en": "Per-term course check: coverage, empty units, missing rubrics, alignment, outdated materials."
+  },
+  {
+   "id": "stale-check",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:stale-check",
+   "zh": "找出上游教材已更新、但下游教案或投影片還沒重新產生的檔案。",
+   "en": "Find lesson plans or slides that are stale because their source material changed."
+  },
+  {
+   "id": "version-keeper",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:version-keeper",
+   "zh": "覆寫檔案前自動留快照並依保留策略清理，不依賴 git。",
+   "en": "Snapshot files before overwriting and prune by retention policy, without git."
+  },
+  {
+   "id": "weekly-teaching-brief",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:weekly-teaching-brief",
+   "zh": "每週備課簡報：本週要教什麼、教材進度、待改作業、待審回饋。",
+   "en": "Weekly teaching brief: what to teach, material status, grading and feedback to review."
+  },
+  {
+   "id": "notebooklm-skill",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:notebooklm-skill",
+   "zh": "把教材送進 NotebookLM 問答並取回含頁碼的引用，上傳前先過隱私閘門。",
+   "en": "Send course materials to NotebookLM for Q&A with page citations, after the privacy gate."
+  },
+  {
+   "id": "office-export",
+   "plugin": "teaching",
+   "version": "1.0.0",
+   "kind": "skill",
+   "step": null,
+   "cond": false,
+   "manual": false,
+   "invoke": "/teaching:office-export",
+   "zh": "需要套校方 Office 模板或追蹤修訂時，輸出 pptx、docx、xlsx。",
+   "en": "Export pptx, docx or xlsx with school templates or tracked changes when required."
   }
  ]
 }

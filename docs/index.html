@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>dev-workflow 個人開發流程</title>
-<meta name="description" content="個人開發流程的 skill 與 agent，分成四個 Claude Code plugin。 A personal development workflow packaged as four Claude Code plugins.">
+<meta name="description" content="個人開發流程的 skill 與 agent，依角色分成多個 Claude Code plugin。 A personal workflow packaged as Claude Code plugins, split by role.">
 <link rel="stylesheet" href="assets/style.css"></head><body>
 <div class="top"><div class="wrap">
 <a class="brand" href="./"><span class="logo"><i></i><i></i><i></i></span>dev-workflow <span class="pill" id="count"></span></a>
@@ -35,7 +35,7 @@
 <p style="margin:12px 0 0"><button class="btn" id="pause" type="button">Pause 暫停</button></p></section>
 
 <section class="sec" id="plugins"><h2>4 plugins</h2>
-<p class="lead">skill 依用途分成四包，專案類型決定啟用哪幾包。<br><span class="en">Skills are grouped into four plugins; the project type decides which ones are enabled.</span></p>
+<p class="lead">skill 依用途分包，專案類型或工作角色決定啟用哪幾包。<br><span class="en">Skills are grouped into plugins; the project type or role decides which ones are enabled.</span></p>
 <div class="cards" id="plugin-cards"></div>
 <p class="sub-h">依專案類型啟用 <small>Enabled by project type</small></p>
 <div class="tw"><table id="roles"></table></div></section>
@@ -53,19 +53,20 @@ SITE.theme(document.getElementById("theme"));
 const E=SITE.esc, strip=s=>s.replace(/^[①-⑨]\s*|^\d+\.\s*/,"");
 SITE.load("").then(d=>{
  ["gh","gh2","gh3"].forEach(i=>document.getElementById(i).href=SITE.repo);
+ const flow=d.skills.filter(s=>s.step), roleSk=d.skills.filter(s=>!s.step);
  const skills=d.skills.filter(s=>s.kind==="skill"), agents=d.skills.filter(s=>s.kind==="agent");
- const manual=skills.filter(s=>s.manual), auto=skills.filter(s=>!s.manual);
+ const manual=flow.filter(s=>s.kind==="skill"&&s.manual), auto=flow.filter(s=>s.kind==="skill"&&!s.manual);
  document.getElementById("count").textContent=d.plugins.length+" plugins";
- document.getElementById("sub").innerHTML=`給 Claude Code 用的個人開發流程。${skills.length} 個 skill（${manual.length} 個只能手動叫）· ${agents.length} 個 agent · ${d.plugins.length} 個 plugin<br><span class="en">A personal development workflow for Claude Code. ${skills.length} skills (${manual.length} manual-only) · ${agents.length} agent · ${d.plugins.length} plugins.</span>`;
+ document.getElementById("sub").innerHTML=`給 Claude Code 用的個人工作流程：開發主流程，加上設計、研究、備課的角色工具包。${skills.length} 個 skill（${manual.length} 個只能手動叫）· ${agents.length} 個 agent · ${d.plugins.length} 個 plugin<br><span class="en">A personal workflow for Claude Code: the development flow plus role toolkits for design, research and teaching. ${skills.length} skills (${manual.length} manual-only) · ${agents.length} agent · ${d.plugins.length} plugins.</span>`;
  // plugins
  document.getElementById("plugin-cards").innerHTML=d.plugins.map(p=>`<div class="card"><span class="kicker">${p.deps.length?"depends on "+p.deps.join(", "):"no dependencies"}</span><h3>${p.id}</h3><p>${E(p.zh)}</p><p class="en">${E(p.en)}</p><p class="en mono" style="font-size:12px">${d.skills.filter(s=>s.plugin===p.id).map(s=>s.id).join(" · ")}</p></div>`).join("");
  document.getElementById("roles").innerHTML="<tr><th>專案類型 Project type</th>"+d.plugins.map(p=>`<th>${p.id}</th>`).join("")+"</tr>"+d.roles.map(r=>`<tr><td>${E(r.zh)} <span class="en">${E(r.en)}</span></td>${d.plugins.map(p=>`<td>${r.plugins.includes(p.id)?"●":""}</td>`).join("")}</tr>`).join("");
  // skills
  document.getElementById("skills-h").textContent=d.skills.length+" skills & agents";
- document.getElementById("skills-lead").innerHTML=`${auto.length} 個模型會在對的時機自己叫用，${manual.length} 個只有你輸入才會跑，${agents.length} 個是被 skill 派出的 agent。<br><span class="en">${auto.length} the model invokes at the right moment, ${manual.length} run only when you type them, ${agents.length} is an agent dispatched by a skill.</span>`;
- const card=s=>`<a class="card" href="skill-map/#node=${s.id}"><span class="kicker">${E(strip(d.steps.find(t=>t.id===s.step).en))} · ${s.plugin}</span><h3>${s.kind==="agent"?"":"/"}${s.id}</h3><p>${E(s.zh)}</p><p class="en">${E(s.en)}</p><span class="chip">${E(s.invoke)}</span></a>`;
+ document.getElementById("skills-lead").innerHTML=`開發流程 ${flow.length} 個（${auto.length} 個模型自己叫用、${manual.length} 個只有你輸入才會跑、${agents.length} 個 agent），另有 ${roleSk.length} 個屬於設計、研究、備課等角色工具包。<br><span class="en">${flow.length} for the development flow (${auto.length} model-invoked, ${manual.length} manual, ${agents.length} agent), plus ${roleSk.length} in role toolkits for design, research and teaching.</span>`;
+ const card=s=>{const st=d.steps.find(t=>t.id===s.step),tag=`<span class="kicker">${st?E(strip(st.en))+" · ":""}${s.plugin}${s.version?" · v"+s.version:""}</span><h3>${s.kind==="agent"?"":"/"}${s.id}</h3><p>${E(s.zh)}</p><p class="en">${E(s.en)}</p><span class="chip">${E(s.invoke)}</span>`;return st?`<a class="card" href="skill-map/#node=${s.id}">${tag}</a>`:`<div class="card">${tag}</div>`};
  const grp=(t,sm,l)=>l.length?`<p class="sub-h">${t} <small>${sm}</small></p><div class="cards">${l.map(card).join("")}</div>`:"";
- document.getElementById("skill-groups").innerHTML=grp("You type 你輸入的",manual.length+" skills",manual)+grp("The model runs 模型自己叫用的",auto.length+" skills",auto)+grp("Agents",agents.length+" agent",agents);
+ document.getElementById("skill-groups").innerHTML=grp("You type 你輸入的",manual.length+" skills",manual)+grp("The model runs 模型自己叫用的",auto.length+" skills",auto)+grp("Agents",agents.length+" agent",agents)+d.plugins.filter(p=>roleSk.some(s=>s.plugin===p.id)).map(p=>{const l=roleSk.filter(s=>s.plugin===p.id);return grp(`${p.id} · ${E(p.zh)} ${E(p.en)}`,l.length+" skills",l)}).join("");
  // lanes animation
  const lanes=[{zh:"待辦",en:"Backlog",who:"you",c:"#6e7781"}].concat(d.steps.filter(s=>s.id!=="side").map(s=>({zh:strip(s.zh),en:strip(s.en),who:d.skills.filter(k=>k.step===s.id&&!k.cond).map(k=>k.id)[0],c:s.color}))).concat([{zh:"MR",en:"Merge request",who:"you",c:"#7c3aed"}]);
  const titles=["Fix clear button","CSV export","Dark mode toggle","Retry failed sync","Login redirect"];

@@ -84,7 +84,7 @@ if(new URLSearchParams(location.search).has("embed"))document.body.classList.add
 SITE.theme(document.getElementById("theme"));
 SITE.load("../").then(d=>{
   D=d; document.getElementById("gh").href=SITE.repo;
-  document.getElementById("count").textContent=d.skills.length+" skills · "+d.plugins.length+" plugins";
+  document.getElementById("count").textContent=d.skills.filter(s=>s.step).length+" skills · dev flow 開發流程";
   document.getElementById("order").innerHTML=d.steps.filter(s=>s.id!=="side").map((st,i)=>`<div class="ostep" style="--c:${st.color}"><b class="n">${i+1}</b><strong>${E(st.zh.replace(/^[①-⑨]\s*/,""))} ${E(st.en.replace(/^\d+\.\s*/,""))}</strong><small>${d.skills.filter(s=>s.step===st.id&&!s.cond).map(s=>s.id).join(" · ")}</small></div>`).join("")+`<div class="ostep" style="--c:var(--purple)"><b class="n">5</b><strong>MR</strong><small>人工 commit、push、開 MR · by a person</small></div>`;
   render(); const m=location.hash.match(/skill=([\w-]+)/); if(m)openModal(m[1],false);
 });
