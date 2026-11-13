@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dev-workflow skill map</title>
+<script>try{const t=localStorage.getItem("theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
+<style>
+:root{--bg:#fff;--canvas:#fafbfc;--soft:#f6f8fa;--ink:#1f2328;--muted:#59636e;--line:#d1d9e0;--accent:#0969da;--hl:#fff1a8;
+--k-skill:#0969da;--k-skill-f:#e3f1ff;--k-manual:#8250df;--k-manual-f:#f4ebff;--k-agent:#0f766e;--k-agent-f:#daf3ef;--k-step:#57606a;--k-step-f:#eef1f4;--k-human:#1f2328;--k-human-f:#e9ebee;
+--w-calls:#1f2328;--w-feeds:#0969da;
+--font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+:root[data-theme=dark]{--bg:#0d1117;--canvas:#010409;--soft:#161b22;--ink:#e6edf3;--muted:#9198a1;--line:#30363d;--accent:#4493f8;--hl:#5c4b00;
+--k-skill:#4493f8;--k-skill-f:#0c2d4d;--k-manual:#ab7df8;--k-manual-f:#2a1a4a;--k-agent:#2dd4bf;--k-agent-f:#0b3b36;--k-step:#9198a1;--k-step-f:#1c2128;--k-human:#e6edf3;--k-human-f:#262c36;
+--w-calls:#c9d1d9;--w-feeds:#4493f8;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--font);display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}a{color:var(--accent)}
+.bar{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);flex:none}
+.bar .ttl{font-weight:700;display:flex;align-items:center;gap:8px;white-space:nowrap}.bar .ttl i{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.bar .pack{font-size:12.5px;font-weight:600;background:var(--k-skill-f);color:var(--k-skill);border:1px solid var(--k-skill);border-radius:6px;padding:1px 8px;white-space:nowrap}
+.bar .sp{flex:1}
+.ib{white-space:nowrap;height:32px;min-width:32px;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:0 9px;font-weight:600}
+.ib:hover{border-color:var(--muted)}.ib.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}.ib.on{background:var(--k-skill-f);border-color:var(--k-skill);color:var(--k-skill)}
+.find{position:relative;flex:0 1 250px}
+.find input{width:100%;height:32px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);padding:0 44px 0 12px;font:inherit}
+.find kbd{position:absolute;right:8px;top:7px;font:11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 4px;color:var(--muted)}
+.res{position:absolute;top:36px;left:0;right:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:30;max-height:300px;overflow:auto;padding:4px}
+.res button{display:block;width:100%;text-align:left;border:0;background:none;padding:6px 8px;border-radius:5px}.res button:hover,.res button.act{background:var(--soft)}.res small{color:var(--muted);margin-left:6px}
+.menu{position:absolute;top:36px;right:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:30;padding:4px;min-width:150px}
+.menu button{display:block;width:100%;text-align:left;border:0;background:none;padding:6px 10px;border-radius:5px}.menu button:hover{background:var(--soft)}
+.body{flex:1;display:flex;min-height:0}
+.side{width:224px;border-right:1px solid var(--line);overflow:auto;flex:none;padding:8px 0}
+.side.off{display:none}
+.side h2{font:700 11px var(--font);letter-spacing:.08em;color:var(--muted);margin:6px 14px 4px;text-transform:uppercase}
+.side button{display:flex;width:100%;border:0;background:none;text-align:left;padding:6px 14px;gap:8px;font-weight:500;align-items:center}
+.side button:hover,.side button.sel{background:var(--soft)}.side button.sel{box-shadow:inset 3px 0 0 var(--accent)}
+.side button span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.side button small{color:var(--muted);font:12px var(--mono)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.stage{flex:1;position:relative;min-height:0;background:var(--canvas);overflow:hidden}
+.stage svg.map-svg{position:absolute;inset:0;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.stage.drag svg.map-svg{cursor:grabbing}
+.ov{position:absolute;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.chip{top:12px;left:14px;padding:5px 12px;border-radius:999px;display:flex;gap:10px;align-items:center;font-weight:700}
+.chip small{font-weight:400;color:var(--muted)}
+.legend{left:14px;bottom:12px;padding:8px 12px;max-width:560px;font-size:12.5px}
+.legend header{display:flex;font:700 11px var(--font);letter-spacing:.08em;margin-bottom:2px}.legend header button{margin-left:auto;border:0;background:none;font-weight:700}
+.legend .rows{display:grid;grid-template-columns:1fr 1fr;gap:1px 22px}.legend.min .rows{display:none}
+.legend .r{display:flex;gap:7px;align-items:center;white-space:nowrap}.legend .r b{font-weight:700}.legend .r span{color:var(--muted)}
+.sw{width:14px;height:9px;border-radius:3px;border:1.5px solid var(--c);background:var(--f);flex:none}.sw.d{border-style:dashed}
+.ln{width:18px;height:0;border-top:2px solid var(--c);flex:none}.ln.d{border-top-style:dashed}
+.mini{right:14px;bottom:62px;width:190px;height:120px;padding:6px;overflow:hidden}
+.mini svg{width:100%;height:100%;display:block;background:var(--k-skill-f);border-radius:4px;cursor:pointer}
+.ctl{right:14px;bottom:12px;display:flex;align-items:center;padding:4px;gap:2px}
+.ctl button{border:0;background:none;height:30px;min-width:30px;border-radius:6px;font-weight:700}.ctl button:hover{background:var(--soft)}.ctl button.on{background:var(--k-skill-f);color:var(--k-skill)}
+.ctl .z{font:12px var(--mono);width:46px;text-align:center;color:var(--muted)}.ctl .sep{width:1px;height:18px;background:var(--line);margin:0 3px}.ctl .rd{font:700 10.5px var(--font);letter-spacing:.1em;padding:0 8px}
+.hint{flex:none;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--muted);padding:5px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.panel{flex:none;border-top:1px solid var(--line);max-height:44vh;overflow:auto;animation:rise .18s ease}
+@keyframes rise{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.panel[hidden]{display:none}
+.ph{display:flex;gap:12px;align-items:center;padding:12px 18px 6px}
+.ph .ic{width:38px;height:38px;border-radius:8px;background:var(--c);color:var(--bg);display:grid;place-items:center;font:700 16px var(--mono);flex:none}
+.ph h2{margin:0;font-size:17px;line-height:1.2}.ph .meta{color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ph .tg{font:700 10px var(--font);letter-spacing:.08em;border:1px solid var(--line);border-radius:4px;padding:0 5px}
+.ph .sp{flex:1}
+.tabs{display:flex;gap:2px;padding:0 14px;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:7px 10px;color:var(--muted);border-bottom:2px solid transparent;font-weight:500}.tabs button.on{color:var(--ink);border-color:var(--accent);font-weight:700}
+.tabs .sp{flex:1}
+.pb{padding:12px 20px 18px;max-width:980px}
+.pb h3{font:700 11px var(--font);letter-spacing:.08em;color:var(--muted);margin:0 0 6px}
+.pb ul{margin:0;padding-left:20px}.pb li{margin:3px 0}.pb li::marker{color:var(--accent)}
+.pb .en{color:var(--muted);display:block;font-size:13px}
+.pb .go{font:600 12px var(--mono);border:1.5px solid var(--accent);color:var(--accent);background:var(--bg);border-radius:999px;padding:1px 9px;margin-left:6px}
+.pb code{font:13px var(--mono);background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+mark{background:var(--hl);color:inherit;padding:0 3px;border-radius:2px}
+.help{position:fixed;inset:0;background:rgba(27,31,36,.5);z-index:60;display:grid;place-items:center}.help[hidden]{display:none}
+.help div{background:var(--bg);border-radius:12px;padding:20px 26px;min-width:280px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.help table{border-collapse:collapse}.help td{padding:4px 14px 4px 0}.help kbd{font:12px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+@media (max-width:760px){.hide-s{display:none!important}.mini,.bar .pack,.find kbd,.hint,#z-1,#z-fit,.ctl .sep,#b-help{display:none}.bar .ttl{min-width:0;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto}.find{flex:1 1 60px;min-width:60px}.bar .sp{display:none}.legend{bottom:54px}.ctl .z{width:38px}.legend{max-width:calc(100% - 28px)}.legend .rows{grid-template-columns:1fr}.bar{gap:6px;padding:8px}.ctl .rd{display:none}}
+</style>
+<style id="mapcss">
+svg text{font-family:var(--font);fill:var(--ink)}
+.family rect{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.family text{font:10px var(--mono);fill:var(--muted)}
+.edge{fill:none;stroke-width:1.6;transition:stroke-width .15s,opacity .2s}
+.halo{fill:none;stroke:var(--canvas);stroke-width:7}
+.hitline{fill:none;stroke:transparent;stroke-width:14}
+.flowline{fill:none;stroke-width:2.6;stroke-dasharray:4 36;stroke-linecap:round;opacity:0}
+.flowing .flowline{opacity:.9;animation:flowdash 2.4s linear infinite}
+@keyframes flowdash{to{stroke-dashoffset:-160}}
+.edge-g.back .edge{stroke-dasharray:7 4}
+.flowing .edge-g.back .edge{animation:march 1.1s linear infinite}
+@keyframes march{to{stroke-dashoffset:-22}}
+.edge-g{transition:opacity .2s}
+.node{cursor:pointer;outline:none;transition:opacity .2s}
+.n-mask{fill:var(--canvas)}
+.n-body{stroke-width:1.6;transition:stroke-width .15s,filter .15s}
+.node:hover .n-body,.node:focus-visible .n-body{stroke-width:2.8}
+.n-label{font:700 13px var(--mono)}
+.n-sub{font-size:9.5px}.n-sub.en{font-size:8.5px;fill:var(--muted)}
+.tab-tx{font:700 7.5px var(--mono);fill:var(--bg);letter-spacing:.06em}
+.ntag-bg{fill:var(--bg);stroke:var(--line)}.ntag-tx{font:9px var(--mono);fill:var(--muted)}
+.node.sel .n-body{stroke-width:3;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--accent) 45%,transparent));animation:select-glow .65s ease-out}
+@keyframes select-glow{0%{filter:drop-shadow(0 0 12px color-mix(in srgb,var(--accent) 70%,transparent));stroke-width:5}}
+.focusing .node:not(.hot){opacity:.28}.focusing .edge-g:not(.hot){opacity:.14}.focusing .family{opacity:.6}
+.focusing .edge-g.hot .edge{stroke-width:2.6}
+.focusing .edge-g.hot .flowline{opacity:.95;stroke-width:3.4;stroke-dasharray:8 13;animation:selected-flow 1.1s linear infinite}
+@keyframes selected-flow{to{stroke-dashoffset:-42}}
+.e-lab rect{fill:var(--bg);stroke:var(--line);stroke-width:.8}.e-lab text{font-size:8.5px;fill:var(--muted)}
+.far .depth-read{opacity:0}.depth-read{transition:opacity .2s}
+.intake-tx{font:600 10px var(--font)}.intake-dot{fill:var(--bg);stroke:var(--w-feeds);stroke-width:2}
+.tour-dot{fill:var(--w-feeds);filter:drop-shadow(0 0 5px var(--w-feeds))}.tour{display:none}.flowing .tour{display:block}
+.flowing .node.tour-stop{transform-box:fill-box;transform-origin:center;animation:tour-pulse 16s ease-in-out infinite}
+@keyframes tour-pulse{0%,9%,100%{transform:none;filter:none}4%{transform:scale(1.05);filter:drop-shadow(0 0 10px color-mix(in srgb,var(--w-feeds) 60%,transparent))}}
+.focusing .tour{display:none}.focusing .node.tour-stop{animation:none}
+@media (prefers-reduced-motion:reduce){.flowing .flowline,.focusing .edge-g.hot .flowline{animation:none;opacity:0}.flowing .edge-g.back .edge,.flowing .node.tour-stop,.node.sel .n-body{animation:none}.flowing .tour{display:none}}
+</style></head><body>
+<div class="bar">
+<button class="ib" id="b-side" aria-label="Toggle list">≡</button>
+<a class="ttl" href="../" style="color:inherit;text-decoration:none"><i></i>dev-workflow skill map</a>
+<span class="pack">4 plugins</span><span class="sp"></span>
+<div class="find"><input id="q" placeholder="Find a node 搜尋節點…" autocomplete="off" aria-label="Find a node"><kbd>⌘K</kbd><div class="res" id="res" hidden></div></div>
+<button class="ib" id="b-theme" aria-label="Toggle theme">◐</button>
+<div style="position:relative"><button class="ib dark" id="b-exp">Export ▾</button><div class="menu" id="menu" hidden><button data-x="svg">SVG</button><button data-x="png">PNG</button></div></div>
+<a class="ib hide-s" href="../map/" style="display:grid;place-items:center;text-decoration:none;color:inherit" title="Stage view 階段版地圖">▦</a>
+<button class="ib" id="b-help" aria-label="Keys">?</button></div>
+<div class="body">
+<nav class="side" id="side"></nav>
+<div class="main">
+<div class="stage flowing" id="stage">
+<div class="ov chip"><span>dev-workflow</span><small id="nn"></small></div>
+<div class="ov legend" id="legend"><header>LEGEND 圖例<button id="b-leg" aria-label="Collapse legend">–</button></header><div class="rows">
+<div class="r"><i class="sw" style="--c:var(--k-skill);--f:var(--k-skill-f)"></i><b>Skill</b><span>模型自己叫用 model runs it</span></div>
+<div class="r"><i class="sw" style="--c:var(--k-step);--f:var(--k-step-f)"></i><b>Process step</b><span>流程步驟</span></div>
+<div class="r"><i class="sw" style="--c:var(--k-manual);--f:var(--k-manual-f)"></i><b>Manual skill</b><span>你輸入才跑 you type it</span></div>
+<div class="r"><i class="sw d" style="--c:var(--k-skill);--f:var(--k-skill-f)"></i><b>Conditional</b><span>有條件才用 only when needed</span></div>
+<div class="r"><i class="sw" style="--c:var(--k-agent);--f:var(--k-agent-f)"></i><b>Agent</b><span>被 skill 派出 dispatched</span></div>
+<div class="r"><i class="sw" style="--c:var(--k-human);--f:var(--k-human-f)"></i><b>You</b><span>人工 done by a person</span></div>
+<div class="r"><i class="ln" style="--c:var(--w-calls)"></i><b>calls</b><span>叫用 runs or invokes it</span></div>
+<div class="r"><i class="ln" style="--c:var(--w-feeds)"></i><b>feeds</b><span>交棒 hands work on</span></div>
+<div class="r"><i class="ln d" style="--c:var(--w-feeds)"></i><b>loops back</b><span>退回 the line that runs right to left</span></div>
+</div></div>
+<div class="ov mini" id="mini"></div>
+<div class="ov ctl"><button id="z-fit" title="Fit 全圖">↑</button><span class="sep"></span><button id="z-out" aria-label="Zoom out">-</button><span class="z" id="zv">100%</span><button id="z-in" aria-label="Zoom in">+</button><span class="sep"></span><button id="z-1">1:1</button><button id="z-flow" class="on" title="Flow animation 流動動畫">≋</button><button id="z-read" class="rd" title="Always show details 一律顯示細節">READ</button></div>
+</div>
+<div class="hint"><span>scroll = zoom 縮放</span><span>drag = move 拖曳</span><span>click = details 說明</span><span>⌘K = search</span><span>? = keys</span></div>
+<section class="panel" id="panel" hidden></section>
+</div></div>
+<div class="help" id="help" hidden><div><b>Keys 快捷鍵</b><table>
+<tr><td><kbd>⌘K</kbd> / <kbd>/</kbd></td><td>search 搜尋</td></tr><tr><td><kbd>+</kbd> <kbd>-</kbd></td><td>zoom 縮放</td></tr><tr><td><kbd>0</kbd></td><td>fit 全圖</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>previous / next node 上一個／下一個</td></tr><tr><td><kbd>f</kbd></td><td>flow animation 流動動畫</td></tr><tr><td><kbd>Esc</kbd></td><td>close 關閉</td></tr></table></div></div>
+<script src="../assets/site.js"></script><script src="app.js"></script></body></html>

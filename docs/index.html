@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="assets/style.css"></head><body>
 <div class="top"><div class="wrap">
 <a class="brand" href="./"><span class="logo"><i></i><i></i><i></i></span>dev-workflow <span class="pill" id="count"></span></a>
-<a class="lk" href="#how">How it works</a><a class="lk" href="#map">Skill map</a><a class="lk" href="#plugins">Plugins</a><a class="lk" href="#skills">Skills</a>
+<a class="lk" href="#how">How it works</a><a class="lk" href="#map">Skill map</a><a class="lk" href="#explore">Pages</a><a class="lk" href="#plugins">Plugins</a><a class="lk" href="#skills">Skills</a>
 <a class="btn" id="gh" href="#">GitHub</a><button class="btn" id="theme" type="button" aria-label="Toggle theme">◐</button></div></div>
 
 <div class="wrap">
@@ -14,13 +14,20 @@
 <h1>dev-workflow</h1>
 <p class="tag">從模糊的需求，到附上證據的 MR。<br><span class="en">From a vague request to a merge request with proof.</span></p>
 <p class="sub" id="sub"></p>
-<div class="row"><a class="btn primary" href="map/">See the skill map 看流程地圖</a><a class="btn" id="gh2" href="#">GitHub</a><a class="btn" href="#how">▶ Watch a ticket 看一張票怎麼走</a></div>
+<div class="row"><a class="btn primary" href="skill-map/">See the skill map 看流程地圖</a><a class="btn" id="gh2" href="#">GitHub</a><a class="btn" href="#how">▶ Watch a ticket 看一張票怎麼走</a></div>
 </section>
 
 <section class="sec" id="map"><h2>The skill map 流程地圖</h2>
-<p class="lead">每個 skill、每個階段，以及它們怎麼接起來。點一格看它什麼時候用。<br><span class="en">Every skill and stage, and how they connect. Click a node to see when to use it.</span></p>
-<div class="embed"><iframe src="map/?embed=1" title="Skill map" loading="lazy"></iframe></div>
-<p style="margin:10px 0 0"><a href="map/">Open full screen 全螢幕開啟 ↗</a></p></section>
+<p class="lead">每個 skill、每個步驟，以及它們怎麼接起來。點節點看說明，可拖曳、滾輪縮放。<br><span class="en">Every skill and step, and how they connect. Click a node to drill in; drag to move, scroll to zoom.</span></p>
+<div class="embed"><iframe src="skill-map/?embed=1" title="Skill map" loading="lazy"></iframe></div>
+<p style="margin:10px 0 0"><a href="skill-map/">Open full screen 全螢幕開啟 ↗</a></p></section>
+
+<section class="sec" id="explore"><h2>Explore 其他頁面</h2>
+<p class="lead">同一份流程的兩種看法。<br><span class="en">Two views of the same workflow.</span></p>
+<div class="cards">
+<a class="card" href="skill-map/"><h3>Skill map</h3><p>每個 skill、步驟與連線。可拖曳縮放，點節點看說明。</p><p class="en">Every skill, step and connection. Pan, zoom, click a node to drill in.</p><span class="kicker">Open →</span></a>
+<a class="card" href="map/"><h3>Stage map 階段地圖</h3><p>依四個階段排好的 skill，由左到右讀，點任何一格看它什麼時候用。</p><p class="en">Skills laid out by the four stages. Read left to right, tap anything to see when to use it.</p><span class="kicker">Open →</span></a>
+</div></section>
 
 <section class="sec" id="how"><h2>Watch a ticket 看一張票怎麼走</h2>
 <p class="lead">每張票依序走過需求、開發、審查、收尾；審查沒過會退回開發。最後的 commit、push、開 MR 一律由人處理。<br><span class="en">Each ticket moves through requirements, build, review and wrap-up; a failed review sends it back to build. Committing, pushing and opening the MR are always done by a person.</span></p>
@@ -38,7 +45,7 @@
 <div id="skill-groups"></div>
 <p class="note">Uses: Matt Pocock skills (MIT) — grilling, grill-me, diagnosing-bugs, tdd, pr, writing-for-agents, retro · doubt-check adapted from Addy Osmani's doubt-driven (MIT) · pr adapted from Humanlayer's show-me.<br>授權全文隨 plugin 附上。<span class="en"> License texts ship with the plugins.</span></p></section>
 </div>
-<footer class="foot"><div class="wrap"><span class="sp">© alexanderchen5966</span><a id="gh3" href="#">GitHub</a><a href="map/">Skill map</a></div></footer>
+<footer class="foot"><div class="wrap"><span class="sp">© alexanderchen5966</span><a id="gh3" href="#">GitHub</a><a href="skill-map/">Skill map</a><a href="map/">Stage map</a></div></footer>
 
 <script src="assets/site.js"></script>
 <script>
@@ -56,7 +63,7 @@ SITE.load("").then(d=>{
  // skills
  document.getElementById("skills-h").textContent=d.skills.length+" skills & agents";
  document.getElementById("skills-lead").innerHTML=`${auto.length} 個模型會在對的時機自己叫用，${manual.length} 個只有你輸入才會跑，${agents.length} 個是被 skill 派出的 agent。<br><span class="en">${auto.length} the model invokes at the right moment, ${manual.length} run only when you type them, ${agents.length} is an agent dispatched by a skill.</span>`;
- const card=s=>`<a class="card" href="map/#skill=${s.id}"><span class="kicker">${E(strip(d.steps.find(t=>t.id===s.step).en))} · ${s.plugin}</span><h3>${s.kind==="agent"?"":"/"}${s.id}</h3><p>${E(s.zh)}</p><p class="en">${E(s.en)}</p><span class="chip">${E(s.invoke)}</span></a>`;
+ const card=s=>`<a class="card" href="skill-map/#node=${s.id}"><span class="kicker">${E(strip(d.steps.find(t=>t.id===s.step).en))} · ${s.plugin}</span><h3>${s.kind==="agent"?"":"/"}${s.id}</h3><p>${E(s.zh)}</p><p class="en">${E(s.en)}</p><span class="chip">${E(s.invoke)}</span></a>`;
  const grp=(t,sm,l)=>l.length?`<p class="sub-h">${t} <small>${sm}</small></p><div class="cards">${l.map(card).join("")}</div>`:"";
  document.getElementById("skill-groups").innerHTML=grp("You type 你輸入的",manual.length+" skills",manual)+grp("The model runs 模型自己叫用的",auto.length+" skills",auto)+grp("Agents",agents.length+" agent",agents);
  // lanes animation
